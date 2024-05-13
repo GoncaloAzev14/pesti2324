@@ -22,14 +22,16 @@ function App() {
 	const [ callEnded, setCallEnded] = useState(false)
 	const [ name, setName ] = useState("")
 	
-  const myVideo = useRef()
+  const myVideo = useRef(null)
 	const userVideo = useRef()
 	const connectionRef= useRef()
 
 	useEffect(() => {
 		navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
 			setStream(stream)
-				myVideo.current.srcObject = stream
+			if (myVideo.current) {
+        myVideo.current.srcObject = stream;
+      }      
 		})
 
 	socket.on("me", (id) => {
