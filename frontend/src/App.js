@@ -47,6 +47,8 @@ function App() {
       setCallerSignal(data.signal);
     });
 
+    // atualização das mensagens recebidas e enviadas (supostamente)
+    // referência ao backend socket.on("message", ...)
     socket.on("message", (data) => {
     //   if (data.from === idToCall || data.to === idToCall) {
         setMessages([...messages, { text: data.text, sender: "other" }]);
@@ -108,6 +110,10 @@ function App() {
     connectionRef.current.destroy();
   };
 
+  // método de envio de mensagens
+  // idToCall no caso de a mensagem ser enviada pelo user que fez a chamada
+  // caller no caso de a mensagem ser enviada pelo user que recebeu a chamada
+  // linha 211 para baixo fazem o tratamento das mensagens em html
   const sendMessage = () => {
     const messageInput = document.getElementById("message");
     const message = messageInput.value;
