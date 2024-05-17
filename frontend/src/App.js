@@ -120,13 +120,17 @@ function App() {
 
     if (message.trim() !== "") {
       const recipientId = callAccepted ? caller : idToCall;
+      
       if (recipientId) {
         socket.emit("message", { to: recipientId, from: me, text: message });
+      } else {
+        socket.emit("message", { to: idToCall, from: me, text: message });
       }
+
       setMessages([...messages, { text: message, sender: me }]);
       messageInput.value = "";
     } else {
-      console.log("TENTASTE");
+      console.log("Error Sending Messages");
     }
   };
 

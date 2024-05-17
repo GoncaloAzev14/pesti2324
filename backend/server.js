@@ -9,6 +9,8 @@ const io = require("socket.io")(server, {
   },
 });
 
+server.listen(5000, () => console.log("server is running on port 5000"));
+
 io.on("connection", (socket) => {
   // Emit the ID to the newly connected client
   socket.emit("me", socket.id);
@@ -38,5 +40,3 @@ io.on("connection", (socket) => {
     io.to(data.to).emit("message", { from: data.from, text: data.text });
   });
 });
-
-server.listen(5000, () => console.log("server is running on port 5000"));
