@@ -31,12 +31,14 @@ io.on("connection", (socket) => {
 
   // Handle answering a call
   socket.on("answerCall", (data) => {
-    io.to(data.to).emit("callAccepted", data.signal);
+    io.to(data.to).emit("callAccepted", {
+      signal: data.signal,
+      name: data.name,
+    });
   });
 
   // Handle sending messages
   socket.on("message", (data) => {
-    console.log(data);
     io.to(data.to).emit("message", { from: data.from, text: data.text });
   });
 });

@@ -20,6 +20,7 @@ function App() {
   const [idToCall, setIdToCall] = useState("");
   const [callEnded, setCallEnded] = useState(false);
   const [name, setName] = useState("");
+  const [otherName, setOtherName] = useState("");
   const [messages, setMessages] = useState([]);
 
   const myVideo = useRef(null);
@@ -43,16 +44,14 @@ function App() {
     socket.on("callUser", (data) => {
       setReceivingCall(true);
       setCaller(data.from);
-      setName(data.name);
       setCallerSignal(data.signal);
+      setOtherName(data.name);
     });
 
     // atualização das mensagens recebidas e enviadas (supostamente)
     // referência ao backend socket.on("message", ...)
     socket.on("message", (data) => {
-    //   if (data.from === idToCall || data.to === idToCall) {
         setMessages([...messages, { text: data.text, sender: "other" }]);
-    //   }
     });
   }, [messages, idToCall]);
 
@@ -76,9 +75,10 @@ function App() {
       userVideo.current.srcObject = stream;
     });
 
-    socket.on("callAccepted", (signal) => {
+    socket.on("callAccepted", (data) => {
       setCallAccepted(true);
-      peer.signal(signal);
+      peer.signal(data.signal);
+      setOtherName(data.name);
     });
 
     connectionRef.current = peer;
@@ -94,7 +94,7 @@ function App() {
     });
 
     peer.on("signal", (data) => {
-      socket.emit("answerCall", { signal: data, to: caller });
+      socket.emit("answerCall", { signal: data, to: caller, name: name });
     });
 
     peer.on("stream", (stream) => {
@@ -207,7 +207,7 @@ function App() {
         <div>
           {receivingCall && !callAccepted ? (
             <div className="caller">
-              <h1>{name} is calling...</h1>
+              <h1>{otherName} is calling...</h1>
               <Button variant="contained" color="primary" onClick={answerCall}>
                 Answer
               </Button>
@@ -223,13 +223,17 @@ function App() {
               </Button>
               <div>
                 {messages.map((message, index) => {
-                  const isSentMessage = message.sender === "me";
+                  // true se a mensagem foi enviada pelo user que fez a chamada
+                  const isSentMessage = message.sender === me;
+
+                  // se a mensagem foi enviada pelo user que fez a chamada, id = sent-message  -> apenas para css
                   const messageClass = isSentMessage
                     ? "sent-message"
                     : "received-message";
+
                   const senderName = isSentMessage
-                    ? "Me"
-                    : name || "Unknown User";
+                    ? name
+                    : otherName || "Unknown User";
 
                   return (
                     <div key={index} className={messageClass}>
