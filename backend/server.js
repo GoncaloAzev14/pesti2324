@@ -37,6 +37,11 @@ io.on("connection", (socket) => {
     });
   });
 
+  // Handle declining calls
+  socket.on('callDeclined', (data) => {
+    io.to(data.to).emit('callDeclined');
+  });
+
   // Handle sending messages
   socket.on("message", (data) => {
     io.to(data.to).emit("message", { from: data.from, text: data.text });

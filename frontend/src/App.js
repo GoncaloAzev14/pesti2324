@@ -53,6 +53,11 @@ function App() {
     socket.on("message", (data) => {
         setMessages([...messages, { text: data.text, sender: "other" }]);
     });
+
+    socket.on("callDeclined", () => {
+      setReceivingCall(false);
+      alert("The call was declined.");
+    });
   }, [messages, idToCall]);
 
   const callUser = (id) => {
@@ -103,6 +108,11 @@ function App() {
 
     peer.signal(callerSignal);
     connectionRef.current = peer;
+  };
+
+  const declineCall = () => {
+    setReceivingCall(false); // Stop indicating that a call is being received
+    socket.emit("callDeclined", { to: caller }); // Notify the caller that the call has been declined
   };
 
   const leaveCall = () => {
@@ -201,15 +211,17 @@ function App() {
                 <PhoneIcon fontSize="large" />
               </IconButton>
             )}
-            {idToCall}
           </div>
         </div>
         <div>
           {receivingCall && !callAccepted ? (
             <div className="caller">
-              <h1>{otherName} is calling...</h1>
+              <h1>Incoming Call From {otherName ? "\"" + otherName + "\"" : "\"Nameless\""}</h1>
               <Button variant="contained" color="primary" onClick={answerCall}>
                 Answer
+              </Button>
+              <Button variant="contained" color="primary" onClick={declineCall}>
+                Decline
               </Button>
             </div>
           ) : null}
