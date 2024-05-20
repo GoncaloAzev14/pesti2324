@@ -46,4 +46,9 @@ io.on("connection", (socket) => {
   socket.on("message", (data) => {
     io.to(data.to).emit("message", { from: data.from, text: data.text });
   });
+
+  // Broadcast when a user ends a call
+  socket.on("endCall", () => {
+    socket.broadcast.emit("callEnded");
+  });
 });

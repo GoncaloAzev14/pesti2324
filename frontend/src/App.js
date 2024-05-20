@@ -18,7 +18,7 @@ function App() {
   const [callerSignal, setCallerSignal] = useState();
   const [callAccepted, setCallAccepted] = useState(false);
   const [idToCall, setIdToCall] = useState("");
-  const [callEnded, setCallEnded] = useState(false);
+  const [callEnded] = useState(false);
   const [name, setName] = useState("");
   const [otherName, setOtherName] = useState("");
   const [messages, setMessages] = useState([]);
@@ -26,6 +26,8 @@ function App() {
   const myVideo = useRef(null);
   const userVideo = useRef();
   const connectionRef = useRef();
+
+  //===========================================================================================
 
   useEffect(() => {
     navigator.mediaDevices
@@ -51,7 +53,7 @@ function App() {
     // atualização das mensagens recebidas e enviadas (supostamente)
     // referência ao backend socket.on("message", ...)
     socket.on("message", (data) => {
-        setMessages([...messages, { text: data.text, sender: "other" }]);
+      setMessages([...messages, { text: data.text, sender: "other" }]);
     });
 
     socket.on("callDeclined", () => {
@@ -59,6 +61,19 @@ function App() {
       alert("The call was declined.");
     });
   }, [messages, idToCall]);
+
+  useEffect(() => {
+
+    socket.on("callEnded", () => {
+      setIdToCall("");
+      setCallAccepted(false);
+      setReceivingCall(false);
+      setOtherName("");
+      setMessages([]);
+    });
+  }, []);
+
+  //===========================================================================================
 
   const callUser = (id) => {
     const peer = new Peer({
@@ -89,6 +104,8 @@ function App() {
     connectionRef.current = peer;
   };
 
+  //===========================================================================================
+
   const answerCall = () => {
     setCallAccepted(true);
 
@@ -110,15 +127,25 @@ function App() {
     connectionRef.current = peer;
   };
 
+  //===========================================================================================
+
   const declineCall = () => {
     setReceivingCall(false); // Stop indicating that a call is being received
     socket.emit("callDeclined", { to: caller }); // Notify the caller that the call has been declined
   };
 
+  //===========================================================================================
+
   const leaveCall = () => {
-    setCallEnded(true);
-    connectionRef.current.destroy();
+    socket.emit("endCall");
+    setIdToCall("");
+    setCallAccepted(false);
+    setReceivingCall(false);
+    setOtherName("");
+    setMessages([]);
   };
+
+  //===========================================================================================
 
   // método de envio de mensagens
   // idToCall no caso de a mensagem ser enviada pelo user que fez a chamada
@@ -130,7 +157,7 @@ function App() {
 
     if (message.trim() !== "") {
       const recipientId = callAccepted ? caller : idToCall;
-      
+
       if (recipientId) {
         socket.emit("message", { to: recipientId, from: me, text: message });
       } else {
@@ -143,6 +170,8 @@ function App() {
       console.log("Error Sending Messages");
     }
   };
+
+  //===========================================================================================
 
   return (
     <>
@@ -216,7 +245,10 @@ function App() {
         <div>
           {receivingCall && !callAccepted ? (
             <div className="caller">
-              <h1>Incoming Call From {otherName ? "\"" + otherName + "\"" : "\"Nameless\""}</h1>
+              <h1>
+                Incoming Call From{" "}
+                {otherName ? '"' + otherName + '"' : '"Nameless"'}
+              </h1>
               <Button variant="contained" color="primary" onClick={answerCall}>
                 Answer
               </Button>
