@@ -63,7 +63,6 @@ function App() {
   }, [messages, idToCall]);
 
   useEffect(() => {
-
     socket.on("callEnded", () => {
       setIdToCall("");
       setCallAccepted(false);
@@ -276,8 +275,8 @@ function App() {
                     : "received-message";
 
                   const senderName = isSentMessage
-                    ? name
-                    : otherName || "Unknown User";
+                    ? name || "You"
+                    : otherName || "Friend";
 
                   return (
                     <div key={index} className={messageClass}>
