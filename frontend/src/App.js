@@ -50,7 +50,7 @@ function App() {
       setOtherName(data.name);
     });
 
-    // atualização das mensagens recebidas e enviadas (supostamente)
+    // atualização das mensagens recebidas e enviadas
     // referência ao backend socket.on("message", ...)
     socket.on("message", (data) => {
       setMessages([...messages, { text: data.text, sender: "other" }]);
@@ -214,7 +214,7 @@ function App() {
               color="primary"
               startIcon={<AssignmentIcon fontSize="large" />}
             >
-              Copy ID
+              Copy ID {me}
             </Button>
           </CopyToClipboard>
 
