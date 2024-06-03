@@ -50,6 +50,7 @@ function App() {
       setOtherName(data.name);
     });
 
+    // teste
     // atualização das mensagens recebidas e enviadas
     // referência ao backend socket.on("message", ...)
     socket.on("message", (data) => {
