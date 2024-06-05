@@ -10,8 +10,9 @@ import io from "socket.io-client";
 import "./App.css";
 
 const socket = io("https://socketiogoncalo.webpubsub.azure.com", {
-    path: "/clients/socketio/hubs/my_hub",
+  path: "/clients/socketio/hubs/my_hub",
 });
+
 function App() {
   const [me, setMe] = useState("");
   const [stream, setStream] = useState();
@@ -24,6 +25,8 @@ function App() {
   const [name, setName] = useState("");
   const [otherName, setOtherName] = useState("");
   const [messages, setMessages] = useState([]);
+  const [isMuted, setIsMuted] = useState(false);
+  const [isCameraOff, setIsCameraOff] = useState(false);
 
   const myVideo = useRef(null);
   const userVideo = useRef();
@@ -175,6 +178,28 @@ function App() {
 
   //===========================================================================================
 
+  const toggleMute = () => {
+    if (stream) {
+      console.log("stream:   ", stream.getAudioTracks()[0].enabled)
+      console.log("isMuted:   ", isMuted)
+      stream.getAudioTracks()[0].enabled = isMuted;
+      setIsMuted(!isMuted);
+    }
+  };
+
+  //===========================================================================================
+
+  const toggleCamera = () => {
+    if (stream) {
+      console.log("stream:   ", stream.getVideoTracks()[0].enabled)
+      console.log("isCameraOff:   ", isCameraOff)
+      stream.getVideoTracks()[0].enabled = isCameraOff;
+      setIsCameraOff(!isCameraOff);
+    }
+  };
+
+  //===========================================================================================
+
   return (
     <>
       <h1 style={{ textAlign: "center", color: "#fff" }}>VIRTUAL AGENT</h1>
@@ -261,8 +286,22 @@ function App() {
           ) : null}
         </div>
         <div>
-          {callAccepted && !callEnded && (
+        {callAccepted && !callEnded && (
             <div>
+              <Button variant="contained" color="primary" onClick={toggleMute}>
+                {isMuted ? "Unmute" : "Mute"}
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={toggleCamera}
+              >
+              {isCameraOff ? "Turn Camera On" : "Turn Camera Off"}
+             </Button>
+            </div>
+        )}
+        {callAccepted && !callEnded && (
+          <div>
               <TextField id="message" variant="filled" />
               <Button variant="contained" color="primary" onClick={sendMessage}>
                 Send
