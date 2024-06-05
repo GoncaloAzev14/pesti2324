@@ -9,7 +9,9 @@ import Peer from "simple-peer";
 import io from "socket.io-client";
 import "./App.css";
 
-const socket = io.connect("https://socketioserver.azurewebsites.net/");
+const socket = io("https://socketiogoncalo.webpubsub.azure.com", {
+    path: "/clients/socketio/hubs/my_hub",
+});
 function App() {
   const [me, setMe] = useState("");
   const [stream, setStream] = useState();
