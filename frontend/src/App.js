@@ -27,6 +27,7 @@ function App() {
   const [messages, setMessages] = useState([]);
   const [isMuted, setIsMuted] = useState(false);
   const [isCameraOff, setIsCameraOff] = useState(false);
+  const [calling, setCalling] = useState(false);
 
   const myVideo = useRef(null);
   const userVideo = useRef();
@@ -55,7 +56,6 @@ function App() {
       setOtherName(data.name);
     });
 
-    // teste
     // atualização das mensagens recebidas e enviadas
     // referência ao backend socket.on("message", ...)
     socket.on("message", (data) => {
@@ -63,6 +63,7 @@ function App() {
     });
 
     socket.on("callDeclined", () => {
+      setCalling(false);
       setReceivingCall(false);
       alert("The call was declined.");
     });
@@ -70,6 +71,7 @@ function App() {
 
   useEffect(() => {
     socket.on("callEnded", () => {
+      setCalling(false);
       setIdToCall("");
       setCallAccepted(false);
       setReceivingCall(false);
@@ -81,6 +83,7 @@ function App() {
   //===========================================================================================
 
   const callUser = (id) => {
+    setCalling(true);
     const peer = new Peer({
       initiator: true,
       trickle: false,
@@ -96,23 +99,23 @@ function App() {
       });
     });
 
-    peer.on("stream", (stream) => {
-      userVideo.current.srcObject = stream;
-    });
+      peer.on("stream", (stream) => {
+        userVideo.current.srcObject = stream;
+      });
 
-    socket.on("callAccepted", (data) => {
-      setCallAccepted(true);
-      peer.signal(data.signal);
-      setOtherName(data.name);
-    });
+      socket.on("callAccepted", (data) => {
+        setCalling(false);
+        setCallAccepted(true);
+        peer.signal(data.signal);
+        setOtherName(data.name);
+      });
 
-    connectionRef.current = peer;
+      connectionRef.current = peer;
   };
-
-  //===========================================================================================
 
   const answerCall = () => {
     setCallAccepted(true);
+    setCalling(false);
 
     const peer = new Peer({
       initiator: false,
@@ -146,6 +149,7 @@ function App() {
     setIdToCall("");
     setCallAccepted(false);
     setReceivingCall(false);
+    setCalling(false);
     setOtherName("");
     setMessages([]);
   };
@@ -180,8 +184,6 @@ function App() {
 
   const toggleMute = () => {
     if (stream) {
-      console.log("stream:   ", stream.getAudioTracks()[0].enabled)
-      console.log("isMuted:   ", isMuted)
       stream.getAudioTracks()[0].enabled = isMuted;
       setIsMuted(!isMuted);
     }
@@ -191,8 +193,6 @@ function App() {
 
   const toggleCamera = () => {
     if (stream) {
-      console.log("stream:   ", stream.getVideoTracks()[0].enabled)
-      console.log("isCameraOff:   ", isCameraOff)
       stream.getVideoTracks()[0].enabled = isCameraOff;
       setIsCameraOff(!isCameraOff);
     }
@@ -274,7 +274,7 @@ function App() {
             <div className="caller">
               <h1>
                 Incoming Call From{" "}
-                {otherName ? '"' + otherName + '"' : '"Nameless"'}
+                {otherName ? '"' + otherName + '"' : '"Your Friend!"'}
               </h1>
               <Button variant="contained" color="primary" onClick={answerCall}>
                 Answer
@@ -286,6 +286,11 @@ function App() {
           ) : null}
         </div>
         <div>
+          {calling && !callAccepted ? (
+            <div className="caller">
+              <h1>Calling ID - {idToCall}...</h1>
+            </div>
+          ) : null}
         {callAccepted && !callEnded && (
             <div>
               <Button variant="contained" color="primary" onClick={toggleMute}>
