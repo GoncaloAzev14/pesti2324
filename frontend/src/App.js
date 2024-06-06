@@ -25,8 +25,8 @@ function App() {
   const [name, setName] = useState("");
   const [otherName, setOtherName] = useState("");
   const [messages, setMessages] = useState([]);
-  const [isMuted, setIsMuted] = useState(false);
-  const [isCameraOff, setIsCameraOff] = useState(false);
+  const [isMuted] = useState(false);
+  const [isCameraOff] = useState(false);
   const [calling, setCalling] = useState(false);
 
   const myVideo = useRef(null);
