@@ -113,6 +113,8 @@ function App() {
     connectionRef.current = peer;
   };
 
+  //===========================================================================================
+
   const answerCall = () => {
     setCallAccepted(true);
     setCalling(false);
@@ -184,19 +186,25 @@ function App() {
 
   const toggleMute = () => {
     if (stream) {
-      stream.getAudioTracks()[0].enabled = isMuted;
-      setIsMuted(!isMuted);
+        const audioTrack = stream.getAudioTracks()[0];
+        const newMutedState = !audioTrack.enabled; // Inverte o estado de mudo
+        audioTrack.enabled = newMutedState; // Atualiza o estado do track de áudio
+        console.log("Microfone:", newMutedState ? "Desligado" : "Ligado"); // Imprime o estado do microfone
     }
-  };
+};
+
 
   //===========================================================================================
 
   const toggleCamera = () => {
     if (stream) {
-      stream.getVideoTracks()[0].enabled = isCameraOff;
-      setIsCameraOff(!isCameraOff);
+        const videoTrack = stream.getVideoTracks()[0];
+        const newCameraState = !videoTrack.enabled; // Inverte o estado da câmera
+        videoTrack.enabled = newCameraState; // Atualiza o estado do track de vídeo
+        console.log("Câmara:", newCameraState ? "Desligada" : "Ligada"); // Imprime o estado da câmera
     }
-  };
+};
+
 
   //===========================================================================================
 
@@ -207,26 +215,31 @@ function App() {
         <div className="video-container">
           <div className="video">
             {stream && (
-              <video
-                playsInline
-                muted
-                ref={myVideo}
-                autoPlay
-                style={{ width: "300px" }}
-              />
+                <video
+                  playsInline
+                  muted
+                  ref={myVideo}
+                  autoPlay
+                  style={{ width: "300px" }}
+                />
             )}
           </div>
           <div className="video">
             {callAccepted && !callEnded ? (
-              <video
-                playsInline
-                ref={userVideo}
-                autoPlay
-                style={{ width: "300px" }}
-              />
+              <>
+                <video
+                  playsInline
+                  ref={userVideo}
+                  autoPlay
+                  style={{ width: "300px" }}
+                />
+              </>
             ) : null}
           </div>
         </div>
+
+        {/*//----------------------------------------------------------------------*/}
+
         <div className="myId">
           <TextField
             id="filled-basic"
@@ -269,42 +282,68 @@ function App() {
             )}
           </div>
         </div>
-        <div>
+
+        {/*//----------------------------------------------------------------------*/}
+
+        <div className="callReceived">
           {receivingCall && !callAccepted ? (
             <div className="caller">
               <h1>
                 Incoming Call From{" "}
                 {otherName ? '"' + otherName + '"' : '"Your Friend!"'}
               </h1>
-              <Button variant="contained" color="primary" onClick={answerCall}>
-                Answer
-              </Button>
-              <Button variant="contained" color="primary" onClick={declineCall}>
-                Decline
-              </Button>
+              <div className="buttonContainer">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={answerCall}
+                >
+                  Answer
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={declineCall}
+                >
+                  Decline
+                </Button>
+              </div>
             </div>
           ) : null}
-        </div>
-        <div>
+
+          {/*//----------------------------------------------------------------------*/}
+
           {calling && !callAccepted ? (
             <div className="caller">
-              <h1>Calling ID - {idToCall}...</h1>
+              <h1>Calling ID - {idToCall}</h1>
             </div>
           ) : null}
+
+          {/*//----------------------------------------------------------------------*/}
+
           {callAccepted && !callEnded && (
-            <div>
-              <Button variant="contained" color="primary" onClick={toggleMute}>
-                {isMuted ? "Unmute" : "Mute"}
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={toggleCamera}
-              >
-                {isCameraOff ? "Turn Camera On" : "Turn Camera Off"}
-              </Button>
-            </div>
+            <>
+              <div>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={toggleMute}
+                >
+                  {isMuted ? "Unmute" : "Mute"}
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={toggleCamera}
+                >
+                  {isCameraOff ? "Turn Camera On" : "Turn Camera Off"}
+                </Button>
+              </div>
+            </>
           )}
+
+          {/*//----------------------------------------------------------------------*/}
+
           {callAccepted && !callEnded && (
             <div>
               <TextField id="message" variant="filled" />
@@ -336,6 +375,8 @@ function App() {
             </div>
           )}
         </div>
+
+        {/*//----------------------------------------------------------------------*/}
       </div>
     </>
   );

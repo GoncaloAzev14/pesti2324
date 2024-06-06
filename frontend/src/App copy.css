@@ -1,0 +1,127 @@
+.app-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100vh;
+	background: #97a6ca;
+	background: -webkit-linear-gradient(to right, #d0c4e4, #1c9412);
+	background: linear-gradient(to right, #54e346, #1d1d1d);
+  }
+  
+  .idle-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+  }
+  
+  .input-group {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	margin-bottom: 10px;
+  }
+  
+  .input {
+	width: 45%;
+  }
+  
+  .caller {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background-color: #ebebeb;
+	padding: 10px;
+	border-radius: 8px;
+	margin-top: 20px;
+  }
+  
+  .app-title {
+	margin-bottom: 20px;
+  }
+  
+  .chat-controls {
+	display: flex;
+	justify-content: space-around;
+	width: 100%;
+	margin-bottom: 10px;
+  }
+  
+  .toggle-buttons {
+	display: flex;
+	justify-content: space-between;
+	width: 200px;
+  }
+  
+  .video-container {
+	display: flex;
+	justify-content: space-around;
+	width: 100%;
+	margin-bottom: 10px;
+  }
+  
+  .video {
+	width: 45%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #333;
+	padding: 10px;
+	border-radius: 8px;
+  }
+  
+  .video-player {
+	width: 100%;
+	border-radius: 8px;
+  }
+  
+  .chat-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 90%;
+	max-width: 600px;
+  }
+  
+  .chat-box {
+	width: 100%;
+	height: 300px;
+	overflow-y: auto;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	border-radius: 8px;
+	padding: 10px;
+	margin-bottom: 10px;
+  }
+  
+  .sent-message {
+	background-color: #dcf8c6;
+	padding: 5px;
+	border-radius: 8px;
+	margin-bottom: 5px;
+	align-self: flex-end;
+  }
+  
+  .received-message {
+	background-color: #ebebeb;
+	padding: 5px;
+	border-radius: 8px;
+	margin-bottom: 5px;
+	align-self: flex-start;
+  }
+  
+  .message-input-container {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+  }
+  
+  .message-input {
+	flex-grow: 1;
+	margin-right: 10px;
+  }
+  
+  .send-button {
+	flex-shrink: 0;
+  }
+  
