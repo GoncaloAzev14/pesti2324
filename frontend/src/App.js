@@ -186,25 +186,23 @@ function App() {
 
   const toggleMute = () => {
     if (stream) {
-        const audioTrack = stream.getAudioTracks()[0];
-        const newMutedState = !audioTrack.enabled; // Inverte o estado de mudo
-        audioTrack.enabled = newMutedState; // Atualiza o estado do track de áudio
-        console.log("Microfone:", newMutedState ? "Desligado" : "Ligado"); // Imprime o estado do microfone
+      const audioTrack = stream.getAudioTracks()[0];
+      const newMutedState = !audioTrack.enabled; // Inverte o estado de mudo
+      audioTrack.enabled = newMutedState; // Atualiza o estado do track de áudio
+      console.log("Microfone:", newMutedState ? "Desligado" : "Ligado"); // Imprime o estado do microfone
     }
-};
-
+  };
 
   //===========================================================================================
 
   const toggleCamera = () => {
     if (stream) {
-        const videoTrack = stream.getVideoTracks()[0];
-        const newCameraState = !videoTrack.enabled; // Inverte o estado da câmera
-        videoTrack.enabled = newCameraState; // Atualiza o estado do track de vídeo
-        console.log("Câmara:", newCameraState ? "Desligada" : "Ligada"); // Imprime o estado da câmera
+      const videoTrack = stream.getVideoTracks()[0];
+      const newCameraState = !videoTrack.enabled; // Inverte o estado da câmera
+      videoTrack.enabled = newCameraState; // Atualiza o estado do track de vídeo
+      console.log("Câmara:", newCameraState ? "Desligada" : "Ligada"); // Imprime o estado da câmera
     }
-};
-
+  };
 
   //===========================================================================================
 
@@ -215,13 +213,13 @@ function App() {
         <div className="video-container">
           <div className="video">
             {stream && (
-                <video
-                  playsInline
-                  muted
-                  ref={myVideo}
-                  autoPlay
-                  style={{ width: "300px" }}
-                />
+              <video
+                playsInline
+                muted
+                ref={myVideo}
+                autoPlay
+                style={{ width: "300px" }}
+              />
             )}
           </div>
           <div className="video">
@@ -240,38 +238,34 @@ function App() {
 
         {/*//----------------------------------------------------------------------*/}
 
-        <div className="myId">
-          <TextField
-            id="filled-basic"
-            label="Name"
-            variant="filled"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            style={{ marginBottom: "20px" }}
-          />
-          <CopyToClipboard text={me} style={{ marginBottom: "2rem" }}>
-            <Button
-              variant="contained"
-              color="primary"
-              startIcon={<AssignmentIcon fontSize="large" />}
-            >
-              Copy ID {me}
-            </Button>
-          </CopyToClipboard>
-
-          <TextField
-            id="filled-basic"
-            label="ID to call"
-            variant="filled"
-            value={idToCall}
-            onChange={(e) => setIdToCall(e.target.value)}
-          />
-          <div className="call-button">
-            {callAccepted && !callEnded ? (
-              <Button variant="contained" color="secondary" onClick={leaveCall}>
-                End Call
+        {!callAccepted ? (
+          <div className="myId">
+            <TextField
+              id="filled-basic"
+              label="Name"
+              variant="filled"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              style={{ marginBottom: "20px" }}
+            />
+            <CopyToClipboard text={me} style={{ marginBottom: "2rem" }}>
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<AssignmentIcon fontSize="large" />}
+              >
+                Copy ID {me}
               </Button>
-            ) : (
+            </CopyToClipboard>
+
+            <TextField
+              id="filled-basic"
+              label="ID to call"
+              variant="filled"
+              value={idToCall}
+              onChange={(e) => setIdToCall(e.target.value)}
+            />
+            <div className="call-button">
               <IconButton
                 color="primary"
                 aria-label="call"
@@ -279,11 +273,19 @@ function App() {
               >
                 <PhoneIcon fontSize="large" />
               </IconButton>
-            )}
+            </div>
           </div>
-        </div>
+        ) : null}
 
         {/*//----------------------------------------------------------------------*/}
+
+        {callAccepted && !callEnded ? (
+          <Button variant="contained" color="secondary" onClick={leaveCall}>
+            End Call
+          </Button>
+        ) : null}
+
+        
 
         <div className="callReceived">
           {receivingCall && !callAccepted ? (
