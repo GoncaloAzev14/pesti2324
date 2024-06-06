@@ -99,18 +99,18 @@ function App() {
       });
     });
 
-      peer.on("stream", (stream) => {
-        userVideo.current.srcObject = stream;
-      });
+    peer.on("stream", (stream) => {
+      userVideo.current.srcObject = stream;
+    });
 
-      socket.on("callAccepted", (data) => {
-        setCalling(false);
-        setCallAccepted(true);
-        peer.signal(data.signal);
-        setOtherName(data.name);
-      });
+    socket.on("callAccepted", (data) => {
+      setCalling(false);
+      setCallAccepted(true);
+      peer.signal(data.signal);
+      setOtherName(data.name);
+    });
 
-      connectionRef.current = peer;
+    connectionRef.current = peer;
   };
 
   const answerCall = () => {
@@ -202,7 +202,7 @@ function App() {
 
   return (
     <>
-      <h1 style={{ textAlign: "center", color: "#fff" }}>VIRTUAL AGENT</h1>
+      <h1 style={{ textAlign: "center", color: "#fff" }}>WebRTC APP</h1>
       <div className="container">
         <div className="video-container">
           <div className="video">
@@ -291,7 +291,7 @@ function App() {
               <h1>Calling ID - {idToCall}...</h1>
             </div>
           ) : null}
-        {callAccepted && !callEnded && (
+          {callAccepted && !callEnded && (
             <div>
               <Button variant="contained" color="primary" onClick={toggleMute}>
                 {isMuted ? "Unmute" : "Mute"}
@@ -301,12 +301,12 @@ function App() {
                 color="primary"
                 onClick={toggleCamera}
               >
-              {isCameraOff ? "Turn Camera On" : "Turn Camera Off"}
-             </Button>
+                {isCameraOff ? "Turn Camera On" : "Turn Camera Off"}
+              </Button>
             </div>
-        )}
-        {callAccepted && !callEnded && (
-          <div>
+          )}
+          {callAccepted && !callEnded && (
+            <div>
               <TextField id="message" variant="filled" />
               <Button variant="contained" color="primary" onClick={sendMessage}>
                 Send

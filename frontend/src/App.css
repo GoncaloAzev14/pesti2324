@@ -10,8 +10,8 @@
 	background: -webkit-linear-gradient(to right, #e2e2e2, #c9d6ff); /* Chrome 10-25, Safari 5.1-6 */
 	background: linear-gradient(
 		to right,
-		#e2e2e2,
-		#c9d6ff
+		#ebf3f2,
+		#ebf3f2
 	); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
 	padding: 2rem;
@@ -36,15 +36,15 @@
 
 .caller {
 	text-align: center;
-	color: #fff;
+	color: #161616;
 }
 
 body {
-	background: #4776e6; /* fallback for old browsers */
-	background: -webkit-linear-gradient(to right, #8e54e9, #4776e6); /* Chrome 10-25, Safari 5.1-6 */
+	background: #97a6ca; /* fallback for old browsers */
+	background: -webkit-linear-gradient(to right, #d0c4e4, #1c9412); /* Chrome 10-25, Safari 5.1-6 */
 	background: linear-gradient(
 		to right,
-		#8e54e9,
-		#4776e6
+		#54e96d,
+		#49c5a0
 	); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
