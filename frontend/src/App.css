@@ -3,20 +3,36 @@ body, html {
     height: 100%;
 }
 
-.container {
+.page {
     display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.container {
+    width: 100%;
+    display: flex;
+    align-items: center;
     flex-direction: column;
     align-items: center;
     height: 100vh;
 	margin-top: -1.5rem;
 }
 
-h1 {
-    margin-top: 2rem;
+.video-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0.5rem;
 }
 
 .myId {
-    margin: 2rem auto;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin: 1rem auto;
     border-radius: 2px;
     background: #c9d6ff;
     padding: 2rem;
@@ -24,6 +40,15 @@ h1 {
     justify-content: center;
     align-content: center;
     max-width: 250px;
+}
+
+.message-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0.5rem;
 }
 
 .buttonContainer {
@@ -61,14 +86,6 @@ video {
     height: auto;
 }
 
-.video-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 1rem;
-    margin-bottom: 0rem;
-}
-
 .callReceived {
     text-align: center;
     color: #161616;
@@ -85,30 +102,33 @@ video {
     justify-content: center;
     gap: 10px;
     text-align: center;
+    margin-top: 1rem;
 }
 
-
 body {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: #97a6ca;
     background: -webkit-linear-gradient(to right, #d0c4e4, #1c9412);
     background: linear-gradient(to right, #54e96d, #49c5a0);
 }
   
 .chat-box {
-  width: 100%;
   height: 300px;
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 8px;
   padding: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   overflow-y: auto;
   margin-left: auto;
   margin-right: auto;
 }
 
 .chatzinho {
-	background-color: #fff;
+    width: 100%;
 };
   
 .sent-message {

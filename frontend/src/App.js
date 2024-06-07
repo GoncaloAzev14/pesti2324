@@ -214,216 +214,226 @@ function App() {
 
   return (
     <>
-      <h1 style={{ textAlign: "center", color: "#fff" }}>WebRTC APP</h1>
-      <div className="container">
-        <div className="video-container">
-          <div className="videos">
-            <div className="myVideoContainer">
-              <>
-                <div className="video-container">
-                  <div className="video">
-                    {stream && (
-                      <video
-                        playsInline
-                        muted
-                        ref={myVideo}
-                        autoPlay
-                        style={{ width: "300px" }}
-                      />
-                    )}
-                  </div>
+      <h1 style={{ textAlign: "center", color: "rgb(255, 255, 255)", width: "100%", alignItems: "center", justifyContent: "center" }}>WebRTC APP</h1>
+      <div className="page">
+        <div className="container">
+          <div className="video-container">
+            <div className="videos">
+              <div className="myVideoContainer">
+                <>
+                  <div className="video-container">
+                    <div className="video">
+                      {stream && (
+                        <video
+                          playsInline
+                          muted
+                          ref={myVideo}
+                          autoPlay
+                          style={{ width: "300px" }}
+                        />
+                      )}
+                    </div>
 
-                  <div className="video">
                     {callAccepted && !callEnded ? (
-                      <video
-                        playsInline
-                        ref={userVideo}
-                        autoPlay
-                        style={{ width: "300px" }}
-                      />
+                      <div className="video">
+                        <video
+                          playsInline
+                          ref={userVideo}
+                          autoPlay
+                          style={{ width: "300px" }}
+                        />
+                      </div>
                     ) : null}
                   </div>
-                </div>
+
+                  {/*//----------------------------------------------------------------------*/}
+
+                  {callAccepted && !callEnded && (
+                    <div className="buttonContainer-small">
+                      <Button
+                        variant="contained"
+                        color={isMuted ? "secondary" : "primary"}
+                        onClick={toggleMute}
+                      >
+                        {isMuted ? "Unmute" : "Mute"}
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color={isCameraOff ? "secondary" : "primary"}
+                        onClick={toggleCamera}
+                      >
+                        {isCameraOff ? "Camera On" : "Camera Off"}
+                      </Button>
+                      <div className="button">
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          onClick={leaveCall}
+                        >
+                          <PhoneOff color="white" />
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </>
+              </div>
+            </div>
+          </div>
+
+          {/*//----------------------------------------------------------------------*/}
+
+          {!callAccepted && !receivingCall && (
+            <div className="myId">
+              <>
+                <TextField
+                  id="filled-basic"
+                  label="Name"
+                  variant="filled"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  style={{ marginBottom: "20px" }}
+                />
+
+                <CopyToClipboard text={me} style={{ marginBottom: "2rem" }}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    startIcon={<AssignmentIcon fontSize="large" />}
+                  >
+                    Copy ID
+                  </Button>
+                </CopyToClipboard>
+
+                <TextField
+                  id="filled-basic"
+                  label="ID to call"
+                  variant="filled"
+                  value={idToCall}
+                  onChange={(e) => setIdToCall(e.target.value)}
+                />
 
                 {/*//----------------------------------------------------------------------*/}
 
-                {callAccepted && !callEnded && (
-                  <div className="buttonContainer-small">
-                    <Button
-                      variant="contained"
-                      color={isMuted ? "secondary" : "primary"}
-                      onClick={toggleMute}
-                    >
-                      {isMuted ? "Unmute" : "Mute"}
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color={isCameraOff ? "secondary" : "primary"}
-                      onClick={toggleCamera}
-                    >
-                      {isCameraOff ? "Camera On" : "Camera Off"}
-                    </Button>
-                    <div className="button">
+                <div className="call-button">
+                  {calling ? (
+                    <>
                       <Button
                         variant="contained"
                         color="secondary"
                         onClick={leaveCall}
                       >
-                        <PhoneOff color="white" />
+                        <CancelIcon color="white" />
                       </Button>
+                      <p style={{ fontSize: "20px" }}>
+                        Calling - {otherName ? otherName : "Friend"}
+                      </p>
+                    </>
+                  ) : (
+                    <div>
+                      <IconButton
+                        aria-label="call"
+                        onClick={() => callUser(idToCall)}
+                      >
+                        <PhoneIcon fontSize="large" color="primary" />
+                      </IconButton>
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
               </>
             </div>
-          </div>
-        </div>
-
-        {/*//----------------------------------------------------------------------*/}
-
-        {!callAccepted && !receivingCall && (
-          <div className="myId">
-            <>
-              <TextField
-                id="filled-basic"
-                label="Name"
-                variant="filled"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                style={{ marginBottom: "20px" }}
-              />
-
-              <CopyToClipboard text={me} style={{ marginBottom: "2rem" }}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  startIcon={<AssignmentIcon fontSize="large" />}
-                >
-                  Copy ID
-                </Button>
-              </CopyToClipboard>
-
-              <TextField
-                id="filled-basic"
-                label="ID to call"
-                variant="filled"
-                value={idToCall}
-                onChange={(e) => setIdToCall(e.target.value)}
-              />
-
-              {/*//----------------------------------------------------------------------*/}
-
-              <div className="call-button">
-                {calling ? (
-                  <>
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      onClick={leaveCall}
-                    >
-                      <CancelIcon color="white" />
-                    </Button>
-                    <p style={{ fontSize: "20px" }}>
-                      Calling - {otherName ? otherName : "Friend"}
-                    </p>
-                  </>
-                ) : (
-                  <div>
-                    <IconButton
-                      aria-label="call"
-                      onClick={() => callUser(idToCall)}
-                    >
-                      <PhoneIcon fontSize="large" color="primary" />
-                    </IconButton>
-                  </div>
-                )}
-              </div>
-            </>
-          </div>
-        )}
-
-        {/*//----------------------------------------------------------------------*/}
-
-        {/*//----------------------------------------------------------------------*/}
-      
-        <div className="message-container">
-          {callAccepted && !callEnded ? (
-            <>
-              {/*//----------------------------------------------------------------------*/}
-
-              <div className="chatzinho">
-                <div className="chat-box">
-                  {messages.map((message, index) => {
-                    // true se a mensagem foi enviada pelo user que fez a chamada
-                    const isSentMessage = message.sender === me;
-
-                    // se a mensagem foi enviada pelo user que fez a chamada, id = sent-message  -> apenas para css
-                    const messageClass = isSentMessage
-                      ? "sent-message"
-                      : "received-message";
-
-                    const senderName = isSentMessage
-                      ? name || "You"
-                      : otherName || "Friend";
-
-                    return (
-                      <div key={index} className={messageClass}>
-                        <span>{senderName}: </span>
-                        {message.text}
-                      </div>
-                    );
-                  })}
-                </div>
-
-                {/*//----------------------------------------------------------------------*/}
-
-                <div className="message-input-container">
-                  <TextField
-                    id="message"
-                    label="Message"
-                    variant="filled"
-                    className="message-input"
-                    style={{ width: "300px" }}
-                  />
-                  <Button variant="contained" onClick={sendMessage}>
-                    <NearMeIcon color="white" />
-                  </Button>
-                </div>
-
-                {/*//----------------------------------------------------------------------*/}
-              </div>
-            </>
-          ) : (
-            <div>
-              {receivingCall && !callAccepted ? (
-                <>
-                  <h1>
-                    Incoming Call From{" "}
-                    {otherName ? '"' + otherName + '"' : "Your Friend!"}
-                  </h1>
-                  <div className="caller">
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={answerCall}
-                    >
-                      <PhoneIcon color="white" />
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      onClick={declineCall}
-                    >
-                      <PhoneDisabledIcon color="white" />
-                    </Button>
-                  </div>
-                </>
-              ) : null}
-            </div>
           )}
-        </div>
 
-        {/*//----------------------------------------------------------------------*/}
+          {/*//----------------------------------------------------------------------*/}
+
+          {/*//----------------------------------------------------------------------*/}
+
+          <div className="message-container">
+            {callAccepted && !callEnded ? (
+              <>
+                {/*//----------------------------------------------------------------------*/}
+
+                <div className="chatzinho">
+                  <div className="chat-box">
+                    {messages.map((message, index) => {
+                      // true se a mensagem foi enviada pelo user que fez a chamada
+                      const isSentMessage = message.sender === me;
+
+                      // se a mensagem foi enviada pelo user que fez a chamada, id = sent-message  -> apenas para css
+                      const messageStyle = {
+                        backgroundColor: isSentMessage ? '#dcf8c6' : '#ebebeb',
+                        padding: '10px',
+                        borderRadius: '8px',
+                        marginBottom: '10px',
+                        alignSelf: isSentMessage ? 'flex-end' : 'flex-start',
+                        maxWidth: '100%',
+                        wordWrap: 'break-word',
+                      };
+
+                      const senderName = isSentMessage
+                        ? name || "You"
+                        : otherName || "Friend";
+
+                      return (
+                        <div key={index} style={messageStyle}>
+                          <span>{senderName}: </span>
+                          {message.text}
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/*//----------------------------------------------------------------------*/}
+
+                  <div className="message-input-container">
+                    <TextField
+                      id="message"
+                      label="Message"
+                      variant="filled"
+                      className="message-input"
+                      style={{ width: "300px" }}
+                    />
+                    <Button variant="contained" onClick={sendMessage}>
+                      <NearMeIcon color="white" />
+                    </Button>
+                  </div>
+
+                  {/*//----------------------------------------------------------------------*/}
+                </div>
+              </>
+            ) : (
+              <div>
+                {receivingCall && !callAccepted ? (
+                  <>
+                    <h1>
+                      Incoming Call From{" "}
+                      {otherName ? '"' + otherName + '"' : "Your Friend!"}
+                    </h1>
+                    <div className="caller">
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={answerCall}
+                        style={{ width: "100px", height: "50px" }}
+                      >
+                        <PhoneIcon color="white" />
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        onClick={declineCall}
+                        style={{ width: "100px", height: "50px" }}
+                      >
+                        <PhoneDisabledIcon color="white" />
+                      </Button>
+                    </div>
+                  </>
+                ) : null}
+              </div>
+            )}
+          </div>
+
+          {/*//----------------------------------------------------------------------*/}
+        </div>
       </div>
     </>
   );
