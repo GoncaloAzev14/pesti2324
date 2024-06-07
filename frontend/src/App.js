@@ -3,6 +3,10 @@ import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import PhoneIcon from "@mui/icons-material/Phone";
+import CancelIcon from "@mui/icons-material/Cancel";
+import PhoneOff from "@mui/icons-material/CallEnd";
+import NearMeIcon from "@mui/icons-material/Send";
+import PhoneDisabledIcon from "@mui/icons-material/PhoneDisabled";
 import React, { useEffect, useRef, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import Peer from "simple-peer";
@@ -25,8 +29,8 @@ function App() {
   const [name, setName] = useState("");
   const [otherName, setOtherName] = useState("");
   const [messages, setMessages] = useState([]);
-  const [isMuted] = useState(false);
-  const [isCameraOff] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+  const [isCameraOff, setIsCameraOff] = useState(false);
   const [calling, setCalling] = useState(false);
 
   const myVideo = useRef(null);
@@ -140,8 +144,8 @@ function App() {
   //===========================================================================================
 
   const declineCall = () => {
-    setReceivingCall(false); // Stop indicating that a call is being received
-    socket.emit("callDeclined", { to: caller }); // Notify the caller that the call has been declined
+    setReceivingCall(false);
+    socket.emit("callDeclined", { to: caller });
   };
 
   //===========================================================================================
@@ -187,9 +191,10 @@ function App() {
   const toggleMute = () => {
     if (stream) {
       const audioTrack = stream.getAudioTracks()[0];
-      const newMutedState = !audioTrack.enabled; // Inverte o estado de mudo
-      audioTrack.enabled = newMutedState; // Atualiza o estado do track de áudio
-      console.log("Microfone:", newMutedState ? "Desligado" : "Ligado"); // Imprime o estado do microfone
+      const newMutedState = !audioTrack.enabled;
+      audioTrack.enabled = newMutedState;
+      console.log("Microphone:", newMutedState ? "Muted" : "Unmuted");
+      setIsMuted(newMutedState);
     }
   };
 
@@ -198,9 +203,10 @@ function App() {
   const toggleCamera = () => {
     if (stream) {
       const videoTrack = stream.getVideoTracks()[0];
-      const newCameraState = !videoTrack.enabled; // Inverte o estado da câmera
-      videoTrack.enabled = newCameraState; // Atualiza o estado do track de vídeo
-      console.log("Câmara:", newCameraState ? "Desligada" : "Ligada"); // Imprime o estado da câmera
+      const newCameraState = !videoTrack.enabled;
+      videoTrack.enabled = newCameraState;
+      console.log("Camera:", newCameraState ? "Off" : "On");
+      setIsCameraOff(newCameraState);
     }
   };
 
@@ -211,169 +217,202 @@ function App() {
       <h1 style={{ textAlign: "center", color: "#fff" }}>WebRTC APP</h1>
       <div className="container">
         <div className="video-container">
-          <div className="video">
-            {stream && (
-              <video
-                playsInline
-                muted
-                ref={myVideo}
-                autoPlay
-                style={{ width: "300px" }}
-              />
-            )}
-          </div>
-          <div className="video">
-            {callAccepted && !callEnded ? (
+          <div className="videos">
+            <div className="myVideoContainer">
               <>
-                <video
-                  playsInline
-                  ref={userVideo}
-                  autoPlay
-                  style={{ width: "300px" }}
-                />
+                <div className="video-container">
+                  <div className="video">
+                    {stream && (
+                      <video
+                        playsInline
+                        muted
+                        ref={myVideo}
+                        autoPlay
+                        style={{ width: "300px" }}
+                      />
+                    )}
+                  </div>
+
+                  <div className="video">
+                    {callAccepted && !callEnded ? (
+                      <video
+                        playsInline
+                        ref={userVideo}
+                        autoPlay
+                        style={{ width: "300px" }}
+                      />
+                    ) : null}
+                  </div>
+                </div>
+
+                {/*//----------------------------------------------------------------------*/}
+
+                {callAccepted && !callEnded && (
+                  <div className="buttonContainer-small">
+                    <Button
+                      variant="contained"
+                      color={isMuted ? "secondary" : "primary"}
+                      onClick={toggleMute}
+                    >
+                      {isMuted ? "Unmute" : "Mute"}
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color={isCameraOff ? "secondary" : "primary"}
+                      onClick={toggleCamera}
+                    >
+                      {isCameraOff ? "Camera On" : "Camera Off"}
+                    </Button>
+                    <div className="button">
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        onClick={leaveCall}
+                      >
+                        <PhoneOff color="white" />
+                      </Button>
+                    </div>
+                  </div>
+                )}
               </>
-            ) : null}
+            </div>
           </div>
         </div>
 
         {/*//----------------------------------------------------------------------*/}
 
-        {!callAccepted ? (
+        {!callAccepted && !receivingCall && (
           <div className="myId">
-            <TextField
-              id="filled-basic"
-              label="Name"
-              variant="filled"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              style={{ marginBottom: "20px" }}
-            />
-            <CopyToClipboard text={me} style={{ marginBottom: "2rem" }}>
-              <Button
-                variant="contained"
-                color="primary"
-                startIcon={<AssignmentIcon fontSize="large" />}
-              >
-                Copy ID {me}
-              </Button>
-            </CopyToClipboard>
+            <>
+              <TextField
+                id="filled-basic"
+                label="Name"
+                variant="filled"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                style={{ marginBottom: "20px" }}
+              />
 
-            <TextField
-              id="filled-basic"
-              label="ID to call"
-              variant="filled"
-              value={idToCall}
-              onChange={(e) => setIdToCall(e.target.value)}
-            />
-            <div className="call-button">
-              <IconButton
-                color="primary"
-                aria-label="call"
-                onClick={() => callUser(idToCall)}
-              >
-                <PhoneIcon fontSize="large" />
-              </IconButton>
-            </div>
+              <CopyToClipboard text={me} style={{ marginBottom: "2rem" }}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  startIcon={<AssignmentIcon fontSize="large" />}
+                >
+                  Copy ID
+                </Button>
+              </CopyToClipboard>
+
+              <TextField
+                id="filled-basic"
+                label="ID to call"
+                variant="filled"
+                value={idToCall}
+                onChange={(e) => setIdToCall(e.target.value)}
+              />
+
+              {/*//----------------------------------------------------------------------*/}
+
+              <div className="call-button">
+                {calling ? (
+                  <>
+                    <Button variant="contained" onClick={leaveCall}>
+                      <CancelIcon color="white" />
+                    </Button>
+                    <p style={{ fontSize: "20px" }}>
+                      Calling - {otherName ? otherName : "Friend"}
+                    </p>
+                  </>
+                ) : (
+                  <div className="call-button">
+                    <IconButton
+                      aria-label="call"
+                      onClick={() => callUser(idToCall)}
+                    >
+                      <PhoneIcon fontSize="large" color="primary" />
+                    </IconButton>
+                  </div>
+                )}
+              </div>
+            </>
           </div>
-        ) : null}
+        )}
 
         {/*//----------------------------------------------------------------------*/}
 
-        {callAccepted && !callEnded ? (
-          <Button variant="contained" color="secondary" onClick={leaveCall}>
-            End Call
-          </Button>
-        ) : null}
+        {/*//----------------------------------------------------------------------*/}
 
-        
-
-        <div className="callReceived">
-          {receivingCall && !callAccepted ? (
-            <div className="caller">
-              <h1>
-                Incoming Call From{" "}
-                {otherName ? '"' + otherName + '"' : '"Your Friend!"'}
-              </h1>
-              <div className="buttonContainer">
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={answerCall}
-                >
-                  Answer
-                </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={declineCall}
-                >
-                  Decline
-                </Button>
-              </div>
-            </div>
-          ) : null}
-
-          {/*//----------------------------------------------------------------------*/}
-
-          {calling && !callAccepted ? (
-            <div className="caller">
-              <h1>Calling ID - {idToCall}</h1>
-            </div>
-          ) : null}
-
-          {/*//----------------------------------------------------------------------*/}
-
-          {callAccepted && !callEnded && (
+        <div className="message-container">
+          {callAccepted && !callEnded ? (
             <>
-              <div>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={toggleMute}
-                >
-                  {isMuted ? "Unmute" : "Mute"}
-                </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={toggleCamera}
-                >
-                  {isCameraOff ? "Turn Camera On" : "Turn Camera Off"}
-                </Button>
+              {/*//----------------------------------------------------------------------*/}
+
+              <div className="chatzinho">
+                <div className="chat-box">
+                  {messages.map((message, index) => {
+                    // true se a mensagem foi enviada pelo user que fez a chamada
+                    const isSentMessage = message.sender === me;
+
+                    // se a mensagem foi enviada pelo user que fez a chamada, id = sent-message  -> apenas para css
+                    const messageClass = isSentMessage
+                      ? "sent-message"
+                      : "received-message";
+
+                    const senderName = isSentMessage
+                      ? name || "You"
+                      : otherName || "Friend";
+
+                    return (
+                      <div key={index} className={messageClass}>
+                        <span>{senderName}: </span>
+                        {message.text}
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/*//----------------------------------------------------------------------*/}
+
+                <div className="message-input-container">
+                  <TextField
+                    id="message"
+                    label="Message"
+                    variant="filled"
+                    className="message-input"
+                    style={{ width: "300px" }}
+                  />
+                  <Button variant="contained" onClick={sendMessage}>
+                    <NearMeIcon color="white" />
+                  </Button>
+                </div>
+
+                {/*//----------------------------------------------------------------------*/}
               </div>
             </>
-          )}
-
-          {/*//----------------------------------------------------------------------*/}
-
-          {callAccepted && !callEnded && (
+          ) : (
             <div>
-              <TextField id="message" variant="filled" />
-              <Button variant="contained" color="primary" onClick={sendMessage}>
-                Send
-              </Button>
-              <div>
-                {messages.map((message, index) => {
-                  // true se a mensagem foi enviada pelo user que fez a chamada
-                  const isSentMessage = message.sender === me;
-
-                  // se a mensagem foi enviada pelo user que fez a chamada, id = sent-message  -> apenas para css
-                  const messageClass = isSentMessage
-                    ? "sent-message"
-                    : "received-message";
-
-                  const senderName = isSentMessage
-                    ? name || "You"
-                    : otherName || "Friend";
-
-                  return (
-                    <div key={index} className={messageClass}>
-                      <span>{senderName}: </span>
-                      {message.text}
-                    </div>
-                  );
-                })}
-              </div>
+              {receivingCall && !callAccepted ? (
+                <div className="caller">
+                  <h1>
+                    Incoming Call From{" "}
+                    {otherName ? '"' + otherName + '"' : "Your Friend!"}
+                  </h1>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={answerCall}
+                  >
+                    <PhoneIcon color="white" />
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={declineCall}
+                  >
+                    <PhoneDisabledIcon color="white" />
+                  </Button>
+                </div>
+              ) : null}
             </div>
           )}
         </div>
