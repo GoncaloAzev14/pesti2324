@@ -316,7 +316,11 @@ function App() {
               <div className="call-button">
                 {calling ? (
                   <>
-                    <Button variant="contained" onClick={leaveCall}>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      onClick={leaveCall}
+                    >
                       <CancelIcon color="white" />
                     </Button>
                     <p style={{ fontSize: "20px" }}>
@@ -324,7 +328,7 @@ function App() {
                     </p>
                   </>
                 ) : (
-                  <div className="call-button">
+                  <div>
                     <IconButton
                       aria-label="call"
                       onClick={() => callUser(idToCall)}
@@ -341,7 +345,7 @@ function App() {
         {/*//----------------------------------------------------------------------*/}
 
         {/*//----------------------------------------------------------------------*/}
-
+      
         <div className="message-container">
           {callAccepted && !callEnded ? (
             <>
@@ -392,26 +396,28 @@ function App() {
           ) : (
             <div>
               {receivingCall && !callAccepted ? (
-                <div className="caller">
+                <>
                   <h1>
                     Incoming Call From{" "}
                     {otherName ? '"' + otherName + '"' : "Your Friend!"}
                   </h1>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={answerCall}
-                  >
-                    <PhoneIcon color="white" />
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={declineCall}
-                  >
-                    <PhoneDisabledIcon color="white" />
-                  </Button>
-                </div>
+                  <div className="caller">
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={answerCall}
+                    >
+                      <PhoneIcon color="white" />
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      onClick={declineCall}
+                    >
+                      <PhoneDisabledIcon color="white" />
+                    </Button>
+                  </div>
+                </>
               ) : null}
             </div>
           )}

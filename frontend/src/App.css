@@ -26,10 +26,6 @@ h1 {
     max-width: 250px;
 }
 
-.chatzinho {
-	background-color: #fff;	
-};
-
 .buttonContainer {
     display: flex;
     gap: 0.5rem;
@@ -50,7 +46,7 @@ h1 {
 
 .call-button {
     text-align: center;
-    margin-top: 0.5rem;
+    margin-top: 2rem;
 }
 
 .video {
@@ -80,10 +76,17 @@ video {
 }
 
 .caller {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-align: center;
 }
+
 
 body {
     background: #97a6ca;
@@ -92,7 +95,7 @@ body {
 }
   
 .chat-box {
-  width: 150%;
+  width: 100%;
   height: 300px;
   background-color: #fff;
   border: 1px solid #ccc;
@@ -103,6 +106,10 @@ body {
   margin-left: auto;
   margin-right: auto;
 }
+
+.chatzinho {
+	background-color: #fff;
+};
   
 .sent-message {
   background-color: #dcf8c6;
