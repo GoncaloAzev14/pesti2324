@@ -3,7 +3,6 @@ import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import PhoneIcon from "@mui/icons-material/Phone";
-import CancelIcon from "@mui/icons-material/Cancel";
 import PhoneOff from "@mui/icons-material/CallEnd";
 import NearMeIcon from "@mui/icons-material/Send";
 import PhoneDisabledIcon from "@mui/icons-material/PhoneDisabled";
@@ -71,9 +70,7 @@ function App() {
       setReceivingCall(false);
       alert("The call was declined.");
     });
-  }, [messages, idToCall]);
 
-  useEffect(() => {
     socket.on("callEnded", () => {
       setCalling(false);
       setIdToCall("");
@@ -82,7 +79,15 @@ function App() {
       setOtherName("");
       setMessages([]);
     });
-  }, []);
+
+    return () => {
+      socket.off("me");
+      socket.off("callUser");
+      socket.off("message");
+      socket.off("callDeclined");
+      socket.off("callEnded");
+    };
+  }, [messages]);
 
   //===========================================================================================
 
@@ -104,7 +109,9 @@ function App() {
     });
 
     peer.on("stream", (stream) => {
-      userVideo.current.srcObject = stream;
+      if (userVideo.current) {
+        userVideo.current.srcObject = stream;
+      }
     });
 
     socket.on("callAccepted", (data) => {
@@ -134,7 +141,9 @@ function App() {
     });
 
     peer.on("stream", (stream) => {
-      userVideo.current.srcObject = stream;
+      if (userVideo.current) {
+        userVideo.current.srcObject = stream;
+      }
     });
 
     peer.signal(callerSignal);
@@ -189,24 +198,30 @@ function App() {
   //===========================================================================================
 
   const toggleMute = () => {
-    if (stream) {
-      const audioTrack = stream.getAudioTracks()[0];
-      const newMutedState = !audioTrack.enabled;
-      audioTrack.enabled = newMutedState;
-      console.log("Microphone:", newMutedState ? "Muted" : "Unmuted");
-      setIsMuted(newMutedState);
+    const audioTrack = stream
+      .getAudioTracks()
+      .find((track) => track.kind === "audio");
+    if (audioTrack.enabled) {
+      audioTrack.enabled = false;
+      setIsMuted(true);
+    } else {
+      audioTrack.enabled = true;
+      setIsMuted(false);
     }
   };
 
   //===========================================================================================
 
   const toggleCamera = () => {
-    if (stream) {
-      const videoTrack = stream.getVideoTracks()[0];
-      const newCameraState = !videoTrack.enabled;
-      videoTrack.enabled = newCameraState;
-      console.log("Camera:", newCameraState ? "Off" : "On");
-      setIsCameraOff(newCameraState);
+    const videoTrack = stream
+      .getTracks()
+      .find((track) => track.kind === "video");
+    if (videoTrack.enabled) {
+      videoTrack.enabled = false;
+      setIsCameraOff(true);
+    } else {
+      videoTrack.enabled = true;
+      setIsCameraOff(false);
     }
   };
 
@@ -214,7 +229,7 @@ function App() {
 
   return (
     <>
-      <h1 style={{ textAlign: "center", color: "rgb(255, 255, 255)", width: "100%", alignItems: "center", justifyContent: "center" }}>WebRTC APP</h1>
+      <h1>WebRTC APP</h1>
       <div className="page">
         <div className="container">
           <div className="video-container">
@@ -222,6 +237,17 @@ function App() {
               <div className="myVideoContainer">
                 <>
                   <div className="video-container">
+                    {callAccepted && !callEnded ? (
+                      <div className="video">
+                        <video
+                          playsInline
+                          ref={userVideo}
+                          autoPlay
+                          style={{ width: "300px" }}
+                        />
+                      </div>
+                    ) : null}
+
                     <div className="video">
                       {stream && (
                         <video
@@ -233,17 +259,6 @@ function App() {
                         />
                       )}
                     </div>
-
-                    {callAccepted && !callEnded ? (
-                      <div className="video">
-                        <video
-                          playsInline
-                          ref={userVideo}
-                          autoPlay
-                          style={{ width: "300px" }}
-                        />
-                      </div>
-                    ) : null}
                   </div>
 
                   {/*//----------------------------------------------------------------------*/}
@@ -265,13 +280,13 @@ function App() {
                         {isCameraOff ? "Camera On" : "Camera Off"}
                       </Button>
                       <div className="button">
-                        <Button
-                          variant="contained"
-                          color="secondary"
+                        <IconButton
+                          aria-label="decline call"
+                          style={{ color: "#c55d5d" }}
                           onClick={leaveCall}
                         >
-                          <PhoneOff color="white" />
-                        </Button>
+                          <PhoneOff fontSize="large" />
+                        </IconButton>
                       </div>
                     </div>
                   )}
@@ -294,16 +309,6 @@ function App() {
                   style={{ marginBottom: "20px" }}
                 />
 
-                <CopyToClipboard text={me} style={{ marginBottom: "2rem" }}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    startIcon={<AssignmentIcon fontSize="large" />}
-                  >
-                    Copy ID
-                  </Button>
-                </CopyToClipboard>
-
                 <TextField
                   id="filled-basic"
                   label="ID to call"
@@ -317,26 +322,32 @@ function App() {
                 <div className="call-button">
                   {calling ? (
                     <>
-                      <Button
-                        variant="contained"
-                        color="secondary"
-                        onClick={leaveCall}
-                      >
-                        <CancelIcon color="white" />
-                      </Button>
-                      <p style={{ fontSize: "20px" }}>
-                        Calling - {otherName ? otherName : "Friend"}
-                      </p>
+                      <div className="cancel">
+                        <IconButton
+                          aria-label="decline call"
+                          style={{ color: "#c55d5d" }}
+                          onClick={leaveCall}
+                        >
+                          <PhoneOff fontSize="large" />
+                        </IconButton>
+                      </div>
                     </>
                   ) : (
-                    <div>
-                      <IconButton
-                        aria-label="call"
-                        onClick={() => callUser(idToCall)}
-                      >
-                        <PhoneIcon fontSize="large" color="primary" />
-                      </IconButton>
-                    </div>
+                    <>
+                      <CopyToClipboard text={me}>
+                        <IconButton aria-label="copy">
+                          <AssignmentIcon fontSize="large" color="primary" />
+                        </IconButton>
+                      </CopyToClipboard>
+                      <div>
+                        <IconButton
+                          aria-label="call"
+                          onClick={() => callUser(idToCall)}
+                        >
+                          <PhoneIcon fontSize="large" color="primary" />
+                        </IconButton>
+                      </div>
+                    </>
                   )}
                 </div>
               </>
@@ -360,13 +371,13 @@ function App() {
 
                       // se a mensagem foi enviada pelo user que fez a chamada, id = sent-message  -> apenas para css
                       const messageStyle = {
-                        backgroundColor: isSentMessage ? '#dcf8c6' : '#ebebeb',
-                        padding: '10px',
-                        borderRadius: '8px',
-                        marginBottom: '10px',
-                        alignSelf: isSentMessage ? 'flex-end' : 'flex-start',
-                        maxWidth: '100%',
-                        wordWrap: 'break-word',
+                        backgroundColor: isSentMessage ? "#dcf8c6" : "#ebebeb",
+                        padding: "10px",
+                        borderRadius: "8px",
+                        marginBottom: "10px",
+                        alignSelf: isSentMessage ? "flex-end" : "flex-start",
+                        maxWidth: "100%",
+                        wordWrap: "break-word",
                       };
 
                       const senderName = isSentMessage
@@ -404,27 +415,32 @@ function App() {
               <div>
                 {receivingCall && !callAccepted ? (
                   <>
-                    <h1>
+                    <span
+                      style={{
+                        fontSize: "24px",
+                        fontWeight: "bold",
+                        color: "grey",
+                      }}
+                    >
                       Incoming Call From{" "}
                       {otherName ? '"' + otherName + '"' : "Your Friend!"}
-                    </h1>
+                    </span>
                     <div className="caller">
-                      <Button
-                        variant="contained"
+                      <IconButton
+                        aria-label="answer call"
                         color="primary"
                         onClick={answerCall}
-                        style={{ width: "100px", height: "50px" }}
                       >
-                        <PhoneIcon color="white" />
-                      </Button>
-                      <Button
-                        variant="contained"
-                        color="secondary"
+                        <PhoneIcon fontSize="large" />
+                      </IconButton>
+
+                      <IconButton
+                        aria-label="decline call"
+                        style={{ color: "#c55d5d" }}
                         onClick={declineCall}
-                        style={{ width: "100px", height: "50px" }}
                       >
-                        <PhoneDisabledIcon color="white" />
-                      </Button>
+                        <PhoneDisabledIcon fontSize="large" />
+                      </IconButton>
                     </div>
                   </>
                 ) : null}
