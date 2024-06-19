@@ -34,8 +34,7 @@ const Chat = ({
   declineCall,
   leaveCall,
   sendMessage,
- }) => {
-
+}) => {
   //===========================================================================================
 
   return (
@@ -48,27 +47,29 @@ const Chat = ({
                 <>
                   <div className="video-container">
                     {callAccepted && !callEnded ? (
-                      <div className="video">
-                        <video
-                          playsInline
-                          ref={userVideo}
-                          autoPlay
-                          style={{ width: "300px" }}
-                        />
-                      </div>
-                    ) : null}
+                      <>
+                        <div className="video">
+                          <video
+                            playsInline
+                            ref={userVideo}
+                            autoPlay
+                            style={{ width: "300px" }}
+                          />
+                        </div>
 
-                    <div className="video">
-                      {stream && (
-                        <video
-                          playsInline
-                          muted
-                          ref={myVideo}
-                          autoPlay
-                          style={{ width: "300px" }}
-                        />
-                      )}
-                    </div>
+                        <div className="video">
+                          {stream && (
+                            <video
+                              playsInline
+                              muted
+                              ref={myVideo}
+                              autoPlay
+                              style={{ width: "300px" }}
+                            />
+                          )}
+                        </div>
+                      </>
+                    ) : null}
                   </div>
 
                   {/*//----------------------------------------------------------------------*/}
@@ -263,6 +264,6 @@ const Chat = ({
       </div>
     </>
   );
-}
+};
 
 export default Chat;

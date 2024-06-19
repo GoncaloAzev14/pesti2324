@@ -1,7 +1,7 @@
 // Sidebar.js
-import React from 'react';
-import { useState } from 'react';
-import './App.css';
+import React from "react";
+import { useState } from "react";
+import "./App.css";
 
 function Sidebar({ setPage }) {
   const [isOpen, setIsOpen] = useState(true);
@@ -11,14 +11,14 @@ function Sidebar({ setPage }) {
   };
 
   return (
-    <div className={`sidebar ${isOpen ? 'open' : 'collapsed'}`}>
+    <div className={`sidebar ${isOpen ? "open" : "collapsed"}`}>
       <button onClick={toggleSidebar} className="toggle-button">
-        {isOpen ? '<' : '>'}
+        {isOpen ? "<" : ">"}
       </button>
       <ul>
-        <li onClick={() => setPage('support')}>Support</li>
-        <li onClick={() => setPage('about')}>About Us</li>
-        <li onClick={() => setPage('chat')}>Make a Call</li>
+        <li onClick={() => setPage("chat")}>Make a Call</li>
+        <li onClick={() => setPage("about")}>About Us</li>
+        <li onClick={() => setPage("support")}>Support</li>
       </ul>
     </div>
   );
