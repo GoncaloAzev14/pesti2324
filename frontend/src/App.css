@@ -33,15 +33,11 @@ html, body {
     transition: width 0.3s;
 }
   
-.sidebar.collapsed {
-    width: 50px;
-}
-  
 .sidebar .toggle-button {
     display: block;
     width: 100%;
     padding: 10px;
-    background-color: #ddd;
+    background-color: #282c34;
     border: none;
     cursor: pointer;
 }
@@ -52,8 +48,9 @@ html, body {
 }
   
 .sidebar ul li {
-    padding: 10px;
     cursor: pointer;
+    color: white;
+    font-family: initial;
 }
   
 .sidebar ul li:hover {

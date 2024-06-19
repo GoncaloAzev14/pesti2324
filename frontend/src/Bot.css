@@ -1,6 +1,6 @@
 .chat-container {
   width: 100%;
-  height: 500px; 
+  height: 500px;
   border: 1px solid #ccc;
   border-radius: 8px;
   overflow: hidden;
@@ -10,54 +10,49 @@
 }
 
 .message-list {
+  display: flex;
+  flex-direction: column; /* Ensures messages stack vertically */
   list-style-type: none;
   margin: 0;
   padding: 0;
-  overflow-y: auto; 
-  flex-grow: 1; 
+  overflow-y: auto;
+  flex-grow: 1;
   padding: 8px;
   background-color: aliceblue;
 }
 
 .message {
+  display: inline-block;
   padding: 8px 16px;
+  margin: 4px 0;
+  max-width: 70%; /* Adjust as necessary */
+  border-radius: 12px;
 }
 
 .message.user {
   text-align: right;
   background-color: #f0f0f0;
+  align-self: flex-end; /* Aligns the user messages to the right */
 }
 
 .message.assistant {
   text-align: left;
-  background-color: #e0f7fa;
+  background-color: #bac7c8;
+  align-self: flex-start; /* Aligns the assistant messages to the left */
 }
 
 .input-container {
   display: flex;
   align-items: center;
   padding: 8px;
-  background-color: #f0f8ff; 
+  background-color: #f0f8ff;
 }
 
 .chat-input {
-  flex-grow: 1; 
+  flex-grow: 1;
   height: 20px;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 8px;
   margin-right: 8px;
-}
-
-.send-button {
-  padding: 8px 16px;
-  border: 1px solid #007bff;
-  background-color: #007bff;
-  color: white;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.send-button:hover {
-  background-color: #0056b3;
 }

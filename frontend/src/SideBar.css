@@ -1,0 +1,85 @@
+/* General sidebar styles */
+.sidebar {
+  background-color: #282c34;
+  border-right: 1px solid #282c34;
+  transition: width 0.3s;
+  width: 155px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar.collapsed {
+  width: 66px; 
+}
+
+.toggle-button {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 24px;
+  transition: transform 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+}
+
+.toggle-button:focus {
+  outline: none;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+  flex-grow: 1;
+}
+
+li {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s, width 0.3s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+li:hover {
+  background-color: #444;
+}
+
+.icon {
+  margin-right: 10px;
+  font-size: 24px;
+  color: #ddd;
+  flex-shrink: 0;
+}
+
+.sidebar.collapsed .icon {
+  margin: 0;
+}
+
+.sidebar.collapsed span {
+  display: none;
+}
+
+.sidebar .text {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.sidebar.open .text {
+  opacity: 1;
+}
+
+.sidebar.open {
+  top: 0;
+}
+
+.sidebar.collapsed {
+  top: 0;
+}

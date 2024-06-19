@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import NearMeIcon from "@mui/icons-material/Send";
+import IconButton from "@mui/material/IconButton";
 import "./Bot.css";
 
 const Bot = () => {
@@ -48,7 +50,7 @@ const Bot = () => {
       <ul className="message-list">
         {conversationHistory.map((message, index) => (
           <li key={index} className={`message ${message.role}`}>
-            {message.role === 'user' ? 'Você: ' : 'Assistente: '}
+            {message.role === 'user' ? <strong>You: </strong> : <strong>Bud: </strong>}
             {message.content}
           </li>
         ))}
@@ -62,7 +64,9 @@ const Bot = () => {
           onKeyPress={(e) => { if (e.key === 'Enter') { sendMessage(); }}}
           placeholder="Digite sua mensagem..."
         />
-        <button className="send-button" onClick={sendMessage}>Enviar</button>
+        <IconButton onClick={sendMessage}>
+          <NearMeIcon fontSize='big'/>
+        </IconButton>
       </div>
     </div>
   );
