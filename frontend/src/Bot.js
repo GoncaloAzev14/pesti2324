@@ -45,15 +45,15 @@ const Bot = () => {
 
   return (
     <div className="chat-container">
-      <ul>
+      <ul className="message-list">
         {conversationHistory.map((message, index) => (
-          <li key={index} className={message.role}>
+          <li key={index} className={`message ${message.role}`}>
             {message.role === 'user' ? 'Você: ' : 'Assistente: '}
             {message.content}
           </li>
         ))}
       </ul>
-      <div style={{ display: 'flex', alignItems: 'center', padding: '8px' }}>
+      <div className="input-container">
         <input
           type="text"
           className="chat-input"
