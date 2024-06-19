@@ -47,3 +47,50 @@ li:hover {
 .sidebar.collapsed span {
   display: none;
 }
+
+.sidebar .text {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.sidebar.open .text {
+  opacity: 1;
+}
+
+.centered-buttons-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+}
+
+.centered-buttons {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.centered-buttons button {
+  border-radius: 10px;
+  background-color: #282c34;
+  color: white;
+  border: none;
+  padding: 80px 70px;
+  font-size: 18px;
+  display: flex;
+  gap: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  justify-content: center;
+}
+
+.centered-buttons button:hover {
+  background-color: #444;
+}
+
+.centered-buttons .icon {
+  font-size: 24px;
+}

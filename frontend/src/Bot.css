@@ -1,23 +1,23 @@
 .chat-container {
-  width: 100%;
-  height: 100%;
-  border: 1px solid #ccc;
+  width: 92%;
+  height: 94%;
+  border: 0px solid #ccc;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
+  padding: 35px;
 }
 
 .message-list {
   display: flex;
-  flex-direction: column; /* Ensures messages stack vertically */
+  flex-direction: column;
   list-style-type: none;
   margin: 0;
   padding: 0;
   overflow-y: auto;
   flex-grow: 1;
-  padding: 8px;
   background-color: aliceblue;
 }
 
@@ -25,20 +25,20 @@
   display: inline-block;
   padding: 8px 16px;
   margin: 4px 0;
-  max-width: 70%; /* Adjust as necessary */
+  max-width: 70%;
   border-radius: 12px;
 }
 
 .message.user {
   text-align: right;
   background-color: #f0f0f0;
-  align-self: flex-end; /* Aligns the user messages to the right */
+  align-self: flex-end;
 }
 
 .message.assistant {
   text-align: left;
   background-color: #bac7c8;
-  align-self: flex-start; /* Aligns the assistant messages to the left */
+  align-self: flex-start;
 }
 
 .input-container {

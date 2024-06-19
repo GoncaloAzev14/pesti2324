@@ -228,12 +228,10 @@ function App() {
       </div>
       <div className="App">
         <Sidebar setPage={setPage} />
-        <div className="content">
           {page === 'chat' && <Chat toggleCamera={toggleCamera} toggleMute={toggleMute} sendMessage={sendMessage} answerCall={answerCall} callUser={callUser} leaveCall={leaveCall} declineCall={declineCall} messages={messages} setMessages={setMessages} callEnded={callEnded} name={name} setName={setName} isCameraOff={isCameraOff} isMuted={isMuted} myVideo={myVideo} userVideo={userVideo} connectionRef={connectionRef} me={me} setMe={setMe} stream={stream} setStream={setStream} receivingCall={receivingCall} setReceivingCall={setReceivingCall} caller={caller} setCaller={setCaller} callerSignal={callerSignal} setCallerSignal={setCallerSignal} callAccepted={callAccepted} setCallAccepted={setCallAccepted} idToCall={idToCall} setIdToCall={setIdToCall} otherName={otherName} setOtherName={setOtherName} calling={calling} 
          setCalling={setCalling} />}
           {page === 'support' && <Bot />}
           {page === 'about' && <div>About Us Content</div>}
-        </div>
       </div>
     </>
   );
