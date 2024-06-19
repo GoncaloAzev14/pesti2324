@@ -39,228 +39,228 @@ const Chat = ({
 
   return (
     <>
-      <div className="page">
-        <div className="container">
-          <div className="video-container">
-            <div className="videos">
-              <div className="myVideoContainer">
-                <>
-                  <div className="video-container">
-                    {callAccepted && !callEnded ? (
-                      <>
-                        <div className="video">
+      <div className="container">
+        <div className="video-container">
+          <div className="videos">
+            <div className="myVideoContainer">
+              <>
+                <div className="video-container">
+                  {callAccepted && !callEnded ? (
+                    <>
+                      <div className="video">
+                        <video
+                          playsInline
+                          ref={userVideo}
+                          autoPlay
+                          style={{ width: "300px" }}
+                        />
+                      </div>
+
+                      <div className="video">
+                        {stream && (
                           <video
                             playsInline
-                            ref={userVideo}
+                            muted
+                            ref={myVideo}
                             autoPlay
                             style={{ width: "300px" }}
                           />
-                        </div>
-
-                        <div className="video">
-                          {stream && (
-                            <video
-                              playsInline
-                              muted
-                              ref={myVideo}
-                              autoPlay
-                              style={{ width: "300px" }}
-                            />
-                          )}
-                        </div>
-                      </>
-                    ) : null}
-                  </div>
-
-                  {/*//----------------------------------------------------------------------*/}
-
-                  {callAccepted && !callEnded && (
-                    <div className="buttonContainer-small">
-                      <Button
-                        variant="contained"
-                        color={isMuted ? "secondary" : "primary"}
-                        onClick={toggleMute}
-                      >
-                        {isMuted ? "Unmute" : "Mute"}
-                      </Button>
-                      <Button
-                        variant="contained"
-                        color={isCameraOff ? "secondary" : "primary"}
-                        onClick={toggleCamera}
-                      >
-                        {isCameraOff ? "Camera On" : "Camera Off"}
-                      </Button>
-                      <div className="button">
-                        <IconButton
-                          aria-label="decline call"
-                          style={{ color: "#c55d5d" }}
-                          onClick={leaveCall}
-                        >
-                          <PhoneOff fontSize="large" />
-                        </IconButton>
+                        )}
                       </div>
-                    </div>
-                  )}
-                </>
-              </div>
-            </div>
-          </div>
-
-          {/*//----------------------------------------------------------------------*/}
-
-          {!callAccepted && !receivingCall && (
-            <div className="myId">
-              <>
-                <TextField
-                  id="filled-basic"
-                  label="Name"
-                  variant="filled"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  style={{ marginBottom: "20px" }}
-                />
-
-                <TextField
-                  id="filled-basic"
-                  label="ID to call"
-                  variant="filled"
-                  value={idToCall}
-                  onChange={(e) => setIdToCall(e.target.value)}
-                />
+                    </>
+                  ) : null}
+                </div>
 
                 {/*//----------------------------------------------------------------------*/}
 
-                <div className="call-button">
-                  {calling ? (
-                    <>
-                      <div className="cancel">
-                        <IconButton
-                          aria-label="decline call"
-                          style={{ color: "#c55d5d" }}
-                          onClick={leaveCall}
-                        >
-                          <PhoneOff fontSize="large" />
-                        </IconButton>
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <CopyToClipboard text={me}>
-                        <IconButton aria-label="copy">
-                          <AssignmentIcon fontSize="large" color="#282c34" />
-                        </IconButton>
-                      </CopyToClipboard>
-                      <div>
-                        <IconButton
-                          aria-label="call"
-                          onClick={() => callUser(idToCall)}
-                        >
-                          <PhoneIcon fontSize="large" color="#282c34" />
-                        </IconButton>
-                      </div>
-                    </>
-                  )}
-                </div>
+                {callAccepted && !callEnded && (
+                  <div className="buttonContainer-small">
+                    <Button
+                      variant="contained"
+                      color={isMuted ? "secondary" : "primary"}
+                      onClick={toggleMute}
+                    >
+                      {isMuted ? "Unmute" : "Mute"}
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color={isCameraOff ? "secondary" : "primary"}
+                      onClick={toggleCamera}
+                    >
+                      {isCameraOff ? "Camera On" : "Camera Off"}
+                    </Button>
+                    <div className="button">
+                      <IconButton
+                        aria-label="decline call"
+                        style={{ color: "#c55d5d" }}
+                        onClick={leaveCall}
+                      >
+                        <PhoneOff fontSize="large" />
+                      </IconButton>
+                    </div>
+                  </div>
+                )}
               </>
+            </div>
+          </div>
+        </div>
+
+        {/*//----------------------------------------------------------------------*/}
+
+        <div>
+          {!callAccepted && !receivingCall && (
+            <div className="myId">
+            <>
+              <TextField
+                id="filled-basic"
+                label="Name"
+                variant="filled"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                style={{ marginBottom: "20px" }}
+              />
+
+              <TextField
+                id="filled-basic"
+                label="ID to call"
+                variant="filled"
+                value={idToCall}
+                onChange={(e) => setIdToCall(e.target.value)}
+              />
+
+              {/*//----------------------------------------------------------------------*/}
+
+              <div className="call-button">
+                {calling ? (
+                  <>
+                    <div className="cancel">
+                      <IconButton
+                        aria-label="decline call"
+                        style={{ color: "#c55d5d" }}
+                        onClick={leaveCall}
+                      >
+                        <PhoneOff fontSize="large" />
+                      </IconButton>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <CopyToClipboard text={me}>
+                      <IconButton aria-label="copy">
+                        <AssignmentIcon fontSize="large" color="#282c34" />
+                      </IconButton>
+                    </CopyToClipboard>
+                    <div>
+                      <IconButton
+                        aria-label="call"
+                        onClick={() => callUser(idToCall)}
+                      >
+                        <PhoneIcon fontSize="large" color="#282c34" />
+                      </IconButton>
+                    </div>
+                  </>
+                )}
+              </div>
+            </>
             </div>
           )}
 
           {/*//----------------------------------------------------------------------*/}
 
-          {/*//----------------------------------------------------------------------*/}
+          {receivingCall && !callAccepted ? (
+            <>
+              <div className="incoming-call">
+                <span
+                  style={{
+                    fontSize: "24px",
+                    fontWeight: "bold",
+                    color: "grey",
+                  }}
+                >
+                  Incoming Call From{" "}
+                  {otherName ? '"' + otherName + '"' : "Your Friend!"}
+                </span>
+                <div className="caller">
+                  <IconButton
+                    aria-label="answer call"
+                    color="#282c34"
+                    onClick={answerCall}
+                  >
+                    <PhoneIcon fontSize="large" />
+                  </IconButton>
 
-          <div className="message-container">
-            {callAccepted && !callEnded ? (
-              <>
+                  <IconButton
+                    aria-label="decline call"
+                    style={{ color: "#c55d5d" }}
+                    onClick={declineCall}
+                  >
+                    <PhoneDisabledIcon fontSize="large" />
+                  </IconButton>
+                </div>
+              </div>
+            </>
+          ) : null}
+        </div>
+
+        {/*//----------------------------------------------------------------------*/}
+
+        <div className="message-container">
+          {callAccepted && !callEnded ? (
+            <>
+              {/*//----------------------------------------------------------------------*/}
+
+              <div className="chatzinho">
+                <div className="chat-box">
+                  {messages.map((message, index) => {
+                    // true se a mensagem foi enviada pelo user que fez a chamada
+                    const isSentMessage = message.sender === me;
+
+                    // se a mensagem foi enviada pelo user que fez a chamada, id = sent-message  -> apenas para css
+                    const messageStyle = {
+                      backgroundColor: isSentMessage ? "#dcf8c6" : "#ebebeb",
+                      padding: "10px",
+                      borderRadius: "8px",
+                      marginBottom: "10px",
+                      alignSelf: isSentMessage ? "flex-end" : "flex-start",
+                      maxWidth: "100%",
+                      wordWrap: "break-word",
+                    };
+
+                    const senderName = isSentMessage
+                      ? name || "You"
+                      : otherName || "Friend";
+
+                    return (
+                      <div key={index} style={messageStyle}>
+                        <span>{senderName}: </span>
+                        {message.text}
+                      </div>
+                    );
+                  })}
+                </div>
+
                 {/*//----------------------------------------------------------------------*/}
 
-                <div className="chatzinho">
-                  <div className="chat-box">
-                    {messages.map((message, index) => {
-                      // true se a mensagem foi enviada pelo user que fez a chamada
-                      const isSentMessage = message.sender === me;
-
-                      // se a mensagem foi enviada pelo user que fez a chamada, id = sent-message  -> apenas para css
-                      const messageStyle = {
-                        backgroundColor: isSentMessage ? "#dcf8c6" : "#ebebeb",
-                        padding: "10px",
-                        borderRadius: "8px",
-                        marginBottom: "10px",
-                        alignSelf: isSentMessage ? "flex-end" : "flex-start",
-                        maxWidth: "100%",
-                        wordWrap: "break-word",
-                      };
-
-                      const senderName = isSentMessage
-                        ? name || "You"
-                        : otherName || "Friend";
-
-                      return (
-                        <div key={index} style={messageStyle}>
-                          <span>{senderName}: </span>
-                          {message.text}
-                        </div>
-                      );
-                    })}
-                  </div>
-
-                  {/*//----------------------------------------------------------------------*/}
-
-                  <div className="message-input-container">
-                    <TextField
-                      id="message"
-                      label="Message"
-                      variant="filled"
-                      className="message-input"
-                      style={{ width: "300px" }}
-                    />
-                    <Button variant="contained" onClick={sendMessage}>
-                      <NearMeIcon color="white" />
-                    </Button>
-                  </div>
-
-                  {/*//----------------------------------------------------------------------*/}
+                <div className="message-input-container">
+                  <TextField
+                    id="message"
+                    label="Message"
+                    variant="filled"
+                    className="message-input"
+                    style={{ width: "300px" }}
+                  />
+                  <Button variant="contained" onClick={sendMessage}>
+                    <NearMeIcon color="white" />
+                  </Button>
                 </div>
-              </>
-            ) : (
-              <div>
-                {receivingCall && !callAccepted ? (
-                  <>
-                    <span
-                      style={{
-                        fontSize: "24px",
-                        fontWeight: "bold",
-                        color: "grey",
-                      }}
-                    >
-                      Incoming Call From{" "}
-                      {otherName ? '"' + otherName + '"' : "Your Friend!"}
-                    </span>
-                    <div className="caller">
-                      <IconButton
-                        aria-label="answer call"
-                        color="#282c34"
-                        onClick={answerCall}
-                      >
-                        <PhoneIcon fontSize="large" />
-                      </IconButton>
 
-                      <IconButton
-                        aria-label="decline call"
-                        style={{ color: "#c55d5d" }}
-                        onClick={declineCall}
-                      >
-                        <PhoneDisabledIcon fontSize="large" />
-                      </IconButton>
-                    </div>
-                  </>
-                ) : null}
+                {/*//----------------------------------------------------------------------*/}
               </div>
-            )}
-          </div>
-
-          {/*//----------------------------------------------------------------------*/}
+            </>
+          ) : null}
         </div>
+
+        {/*//----------------------------------------------------------------------*/}
       </div>
     </>
   );

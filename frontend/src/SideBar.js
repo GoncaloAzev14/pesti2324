@@ -1,28 +1,28 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import "./SideBar.css";
 import {
   FaPhone,
   FaInfoCircle,
   FaQuestionCircle,
-  FaChevronLeft,
-  FaChevronRight,
 } from "react-icons/fa";
 
 function Sidebar({ setPage }) {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
-  const toggleSidebar = () => {
-    setIsOpen(!isOpen);
+  const handleMouseEnter = () => {
+    setIsOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsOpen(false);
   };
 
   return (
-    <div className={`sidebar ${isOpen ? "open" : "collapsed"}`}>
-      <button onClick={toggleSidebar} className="toggle-button">
-        <span className="toggle-icon">
-          {isOpen ? <FaChevronLeft /> : <FaChevronRight />}
-        </span>
-      </button>
+    <div
+      className={`sidebar ${isOpen ? "open" : "collapsed"}`}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       <ul>
         <li onClick={() => setPage("chat")}>
           <FaPhone className="icon" />
