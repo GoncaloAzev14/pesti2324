@@ -41,7 +41,7 @@ h1 {
 .myId {
     width: 100%;
     border-radius: 2px;
-    background: #c9d6ff;
+    background: #f0f8ff;
     padding: 2rem;
     display: grid;
     align-content: center;
@@ -54,7 +54,7 @@ h1 {
     align-items: center;
     justify-content: center;
     align-items: center;
-    margin-top: 0.5rem;
+    height: 100%;
 }
 
 .buttonContainer {
@@ -100,16 +100,11 @@ video {
 }
 
 .caller {
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, -50%);
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap: 10px;
     text-align: center;
-    margin-top: 2.1rem;
 }
 
 body {

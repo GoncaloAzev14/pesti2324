@@ -147,7 +147,7 @@ const Chat = ({
                     <>
                       <CopyToClipboard text={me}>
                         <IconButton aria-label="copy">
-                          <AssignmentIcon fontSize="large" color="primary" />
+                          <AssignmentIcon fontSize="large" color="#282c34" />
                         </IconButton>
                       </CopyToClipboard>
                       <div>
@@ -155,7 +155,7 @@ const Chat = ({
                           aria-label="call"
                           onClick={() => callUser(idToCall)}
                         >
-                          <PhoneIcon fontSize="large" color="primary" />
+                          <PhoneIcon fontSize="large" color="#282c34" />
                         </IconButton>
                       </div>
                     </>
@@ -239,7 +239,7 @@ const Chat = ({
                     <div className="caller">
                       <IconButton
                         aria-label="answer call"
-                        color="primary"
+                        color="#282c34"
                         onClick={answerCall}
                       >
                         <PhoneIcon fontSize="large" />
