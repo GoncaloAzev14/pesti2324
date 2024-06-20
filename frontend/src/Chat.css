@@ -5,8 +5,7 @@ html, body {
     height: 100%;
 }
 
-h1 {
-    color: white;
+.container {
     width: 100%;
     display: flex;
     align-items: center;
@@ -62,7 +61,7 @@ h1 {
 
 .buttonContainer-small button {
     margin: 0.5rem;
-	margin-bottom: 3rem;
+    margin-bottom: 3rem;
 }
 
 .button {
@@ -173,8 +172,29 @@ body {
 
 .incoming-call {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100%;
-    width: 100%;
+    text-align: center;
+}
+
+.incoming-call-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+
+.incoming-call-text {
+    font-size: 24px;
+    font-weight: bold;
+    color: grey;
+    margin-bottom: 20px;
+}
+
+.caller {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
 }

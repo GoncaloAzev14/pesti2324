@@ -8,6 +8,7 @@ import NearMeIcon from "@mui/icons-material/Send";
 import PhoneDisabledIcon from "@mui/icons-material/PhoneDisabled";
 import React from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import incomingCallImage from "./silhouette.jpeg";
 import "./Chat.css";
 
 const Chat = ({
@@ -170,7 +171,8 @@ const Chat = ({
           {receivingCall && !callAccepted ? (
             <>
               <div className="incoming-call">
-                <span
+            <img src={incomingCallImage} alt="Incoming Call" className="incoming-call-image" />
+            <span className="incoming-call-text"
                   style={{
                     fontSize: "24px",
                     fontWeight: "bold",
