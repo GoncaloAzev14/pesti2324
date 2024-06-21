@@ -6,6 +6,10 @@ import PhoneIcon from "@mui/icons-material/Phone";
 import PhoneOff from "@mui/icons-material/CallEnd";
 import NearMeIcon from "@mui/icons-material/Send";
 import PhoneDisabledIcon from "@mui/icons-material/PhoneDisabled";
+import MicIcon from '@mui/icons-material/Mic';
+import MicOffIcon from '@mui/icons-material/MicOff';
+import VideocamIcon from '@mui/icons-material/Videocam';
+import VideocamOffIcon from '@mui/icons-material/VideocamOff';
 import React from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import incomingCallImage from "./silhouette.jpeg";
@@ -68,29 +72,27 @@ const Chat = ({
                   />
                 )}
                 <div className="call-buttons">
-                  <Button
+                  <IconButton
                     variant="contained"
-                    color={isMuted ? "secondary" : "primary"}
                     onClick={toggleMute}
                     style={{ marginBottom: "5px" }}
                   >
-                    {isMuted ? "Unmute" : "Mute"}
-                  </Button>
-                  <Button
+                    {isMuted ? <MicIcon/> : <MicOffIcon/>}
+                  </IconButton>
+                  <IconButton
                     variant="contained"
-                    color={isCameraOff ? "secondary" : "primary"}
                     onClick={toggleCamera}
                     style={{ marginBottom: "5px" }}
                   >
-                    {isCameraOff ? "Camera On" : "Camera Off"}
-                  </Button>
+                    {isCameraOff ? <VideocamIcon/> : <VideocamOffIcon/>}
+                  </IconButton>
                   <div className="button">
                     <IconButton
                       aria-label="decline call"
                       style={{ color: "#c55d5d" }}
                       onClick={leaveCall}
                     >
-                      <PhoneOff fontSize="large" />
+                      <PhoneOff/>
                     </IconButton>
                   </div>
                 </div>
@@ -102,7 +104,7 @@ const Chat = ({
                     const isSentMessage = message.sender === me;
 
                     const messageStyle = {
-                      backgroundColor: isSentMessage ? "#dcf8c6" : "#ebebeb",
+                      backgroundColor: isSentMessage ? "#bac7c8" : "#ebebeb",
                       padding: "10px",
                       borderRadius: "8px",
                       marginBottom: "10px",
@@ -131,15 +133,14 @@ const Chat = ({
                     variant="filled"
                     className="message-input"
                     style={{
-                      flex: 1,
-                      marginRight: "10px",
+                      marginRight: "4px",
                       backgroundColor: "rgba(255, 255, 255, 0.9)",
-                      borderRadius: "8px",
+                      borderRadius: "6px",
                     }}
                   />
-                  <Button variant="contained" onClick={sendMessage}>
+                  <IconButton variant="contained" onClick={sendMessage}>
                     <NearMeIcon color="white" />
-                  </Button>
+                  </IconButton>
                 </div>
               </div>
             </div>
