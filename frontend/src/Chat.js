@@ -5,10 +5,10 @@ import PhoneIcon from "@mui/icons-material/Phone";
 import PhoneOff from "@mui/icons-material/CallEnd";
 import NearMeIcon from "@mui/icons-material/Send";
 import PhoneDisabledIcon from "@mui/icons-material/PhoneDisabled";
-import MicIcon from '@mui/icons-material/Mic';
-import MicOffIcon from '@mui/icons-material/MicOff';
-import VideocamIcon from '@mui/icons-material/Videocam';
-import VideocamOffIcon from '@mui/icons-material/VideocamOff';
+import MicIcon from "@mui/icons-material/Mic";
+import MicOffIcon from "@mui/icons-material/MicOff";
+import VideocamIcon from "@mui/icons-material/Videocam";
+import VideocamOffIcon from "@mui/icons-material/VideocamOff";
 import React from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import incomingCallImage from "./silhouette.jpeg";
@@ -47,28 +47,15 @@ const Chat = ({
         {callAccepted && !callEnded && (
           <div className="video-container">
             <div className="video2">
-              <video
-                playsInline
-                ref={userVideo}
-                autoPlay
-                style={{ height: "100%", width: "auto", borderRadius: "8px" }}
-              />
+              <video playsInline ref={userVideo} autoPlay />
             </div>
 
             <div className="right-container">
               <div className="video1-container">
                 {stream && (
-                  <video
-                    playsInline
-                    muted
-                    ref={myVideo}
-                    autoPlay
-                    style={{
-                      width: "300px",
-                      height: "auto",
-                      borderRadius: "8px",
-                    }}
-                  />
+                  <div className="video1">
+                    <video playsInline muted ref={myVideo} autoPlay />
+                  </div>
                 )}
                 <div className="call-buttons">
                   <IconButton
@@ -76,14 +63,14 @@ const Chat = ({
                     onClick={toggleMute}
                     style={{ marginBottom: "5px" }}
                   >
-                    {isMuted ? <MicIcon/> : <MicOffIcon/>}
+                    {isMuted ? <MicIcon /> : <MicOffIcon />}
                   </IconButton>
                   <IconButton
                     variant="contained"
                     onClick={toggleCamera}
                     style={{ marginBottom: "5px" }}
                   >
-                    {isCameraOff ? <VideocamIcon/> : <VideocamOffIcon/>}
+                    {isCameraOff ? <VideocamIcon /> : <VideocamOffIcon />}
                   </IconButton>
                   <div className="button">
                     <IconButton
@@ -91,7 +78,7 @@ const Chat = ({
                       style={{ color: "#c55d5d" }}
                       onClick={leaveCall}
                     >
-                      <PhoneOff/>
+                      <PhoneOff />
                     </IconButton>
                   </div>
                 </div>
@@ -131,6 +118,11 @@ const Chat = ({
                     label="Message"
                     variant="filled"
                     className="message-input"
+                    onKeyPress={(e) => {
+                      if (e.key === "Enter") {
+                        sendMessage();
+                      }
+                    }}
                     style={{
                       marginRight: "4px",
                       backgroundColor: "rgba(255, 255, 255, 0.9)",
