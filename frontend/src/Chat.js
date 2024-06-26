@@ -9,9 +9,13 @@ import MicIcon from "@mui/icons-material/Mic";
 import MicOffIcon from "@mui/icons-material/MicOff";
 import VideocamIcon from "@mui/icons-material/Videocam";
 import VideocamOffIcon from "@mui/icons-material/VideocamOff";
-import React from "react";
+import RobotIcon from "@mui/icons-material/SmartToy";
+import ChatIcon from "@mui/icons-material/Chat";
+import React, { useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import incomingCallImage from "./silhouette.jpeg";
+import Sms from "./Sms.js";
+import Bud from "./Bot.js";
 import "./Chat.css";
 
 const Chat = ({
@@ -40,6 +44,16 @@ const Chat = ({
   sendMessage,
 }) => {
   //===========================================================================================
+
+  const [smsChat, setSmsChat] = useState(false);
+
+  const handleChat = () => {
+    if (smsChat) {
+      setSmsChat(false);
+    } else {
+      setSmsChat(true);
+    }
+  };
 
   return (
     <>
@@ -85,54 +99,50 @@ const Chat = ({
               </div>
 
               <div className="chatzinho">
-                <div className="chat-box">
-                  {messages.map((message, index) => {
-                    const isSentMessage = message.sender === me;
+                <IconButton variant="contained" onClick={handleChat}>
+                  {smsChat ? (
+                    <RobotIcon fontSize="large" />
+                  ) : (
+                    <ChatIcon fontSize="large" />
+                  )}
+                </IconButton>
 
-                    const messageStyle = {
-                      backgroundColor: isSentMessage ? "#bac7c8" : "#ebebeb",
-                      padding: "10px",
-                      borderRadius: "8px",
-                      marginBottom: "10px",
-                      alignSelf: isSentMessage ? "flex-end" : "flex-start",
-                      maxWidth: "100%",
-                      wordWrap: "break-word",
-                    };
+                {smsChat ? (
+                  <Bud />
+                ) : (
+                  <>
+                    <div className="bud">
+                      <Sms
+                        smsChat={true}
+                        messages={messages}
+                        me={me}
+                        otherName={otherName}
+                      />
 
-                    const senderName = isSentMessage
-                      ? "You"
-                      : otherName || "Friend";
-
-                    return (
-                      <div key={index} style={messageStyle}>
-                        <span>{senderName}: </span>
-                        {message.text}
+                      <div className="message-input-container">
+                        <TextField
+                          id="message"
+                          label="Message"
+                          variant="filled"
+                          className="message-input"
+                          onKeyPress={(e) => {
+                            if (e.key === "Enter") {
+                              sendMessage();
+                            }
+                          }}
+                          style={{
+                            marginRight: "4px",
+                            backgroundColor: "rgba(255, 255, 255, 0.9)",
+                            borderRadius: "6px",
+                          }}
+                        />
+                        <IconButton variant="contained" onClick={sendMessage}>
+                          <NearMeIcon color="white" />
+                        </IconButton>
                       </div>
-                    );
-                  })}
-                </div>
-
-                <div className="message-input-container">
-                  <TextField
-                    id="message"
-                    label="Message"
-                    variant="filled"
-                    className="message-input"
-                    onKeyPress={(e) => {
-                      if (e.key === "Enter") {
-                        sendMessage();
-                      }
-                    }}
-                    style={{
-                      marginRight: "4px",
-                      backgroundColor: "rgba(255, 255, 255, 0.9)",
-                      borderRadius: "6px",
-                    }}
-                  />
-                  <IconButton variant="contained" onClick={sendMessage}>
-                    <NearMeIcon color="white" />
-                  </IconButton>
-                </div>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -150,7 +160,7 @@ const Chat = ({
               <>
                 <TextField
                   id="filled-basic"
-                  label="Name"
+                  label="Your Name"
                   variant="filled"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -207,6 +217,14 @@ const Chat = ({
               <div className="incoming-call">
                 {" "}
                 {/* MENU CALL RECEIVER */}
+                <TextField
+                  id="filled-basic"
+                  label="Your Name"
+                  variant="filled"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  style={{ marginBottom: "20px" }}
+                />
                 <img
                   src={incomingCallImage}
                   alt="Incoming Call"
