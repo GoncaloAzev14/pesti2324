@@ -10,6 +10,8 @@
 }
 
 .message-list {
+  display: flex;
+  flex-direction: column;
   width: auto;
   flex-grow: 1;
   overflow-y: auto;
