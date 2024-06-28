@@ -127,6 +127,10 @@ body {
   width: -webkit-fill-available;
 }
 
+.bud {
+  display: contents;
+}
+
 .message-input-container {
   display: flex;
   align-items: center;
