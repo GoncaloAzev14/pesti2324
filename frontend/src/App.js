@@ -270,7 +270,29 @@ function App() {
           />
         )}
         {page === "support" && <Bot />}
-        {page === "about" && <div>About Us Content</div>}
+        {page === "about" && (
+          <div className="aboutUs">
+            <p>No âmbito da unidade curricular de Projeto/Estágio (PESTI) a
+            decorrer no segundo semestre do terceiro ano da Licenciatura em
+            Engenharia Informática, foi apresentada a possibilidade de
+            desenvolver, por parte da empresa DevScope, uma solução com vista à
+            criação de uma ‘user interface’ (UI) que una um avatar assistente
+            virtual e APIs de comunicação, para melhorar a comunicação e
+            assistência aos colaboradores da empresa. 
+            </p>
+            <p>
+            Com este projeto,
+            estudou-se a funcionalidade do protocolo WebRTC numa interface de
+            utilizador com comunicação por mídia (áudio e vídeo) e texto. O
+            desenvolvimento da solução pretendida exigiu bastante trabalho de
+            pesquisa e aprofundamento de conhecimentos no contexto de
+            comunicação web em tempo real. 
+            </p>
+            <p>A solução final do projeto
+            encontra-se aqui disponibilizada.
+            </p>
+          </div>
+        )}
       </div>
     </>
   );
